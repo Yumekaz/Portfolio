@@ -1,9 +1,25 @@
+import { ExternalLink } from 'lucide-react';
 import projects from '../data/projects';
-import type { FailureNote } from '../data/projects';
+import type { FailureNote, ProjectStatus } from '../data/projects';
 
 interface CaseStudyViewerProps {
   activeSection: string;
 }
+
+/** Colour map for status badges */
+const statusStyles: Record<ProjectStatus, string> = {
+  Active: 'bg-green-100 text-green-800 border-green-300',
+  Shipped: 'bg-blue-100 text-blue-800 border-blue-300',
+  Hackathon: 'bg-purple-100 text-purple-800 border-purple-300',
+};
+
+/** Colour map for language dots */
+const langColors: Record<string, string> = {
+  Python: 'bg-blue-500',
+  Rust: 'bg-orange-700',
+  JavaScript: 'bg-yellow-400',
+  TypeScript: 'bg-blue-600',
+};
 
 /**
  * Renders a single failure/insight note block styled like the original
@@ -33,8 +49,8 @@ function FailureNoteCard({ note }: { note: FailureNote }) {
 
 /**
  * CaseStudyViewer — displays the selected project's case study,
- * including description, technical highlights, and integrated
- * failure/insight notes where they exist.
+ * including description, technical highlights, metadata (language,
+ * status, GitHub link), and integrated failure/insight notes.
  */
 export default function CaseStudyViewer({ activeSection }: CaseStudyViewerProps) {
   const project = projects.find((p) => p.id === activeSection);
@@ -43,9 +59,33 @@ export default function CaseStudyViewer({ activeSection }: CaseStudyViewerProps)
   return (
     <article className="lg:col-span-9 p-8 lg:p-12">
       <div className="max-w-3xl space-y-6">
-        <h2 className="text-3xl font-bold font-mono mb-2 tracking-tight">
-          {project.title}
-        </h2>
+        {/* Title + metadata row */}
+        <div>
+          <h2 className="text-3xl font-bold font-mono mb-3 tracking-tight">
+            {project.title}
+          </h2>
+          <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
+            {/* Status badge */}
+            <span className={`px-2 py-0.5 border rounded-sm font-bold ${statusStyles[project.status]}`}>
+              {project.status}
+            </span>
+            {/* Language dot + label */}
+            <span className="flex items-center gap-1.5 text-gray-600">
+              <span className={`w-2.5 h-2.5 rounded-full ${langColors[project.language] ?? 'bg-gray-400'}`} />
+              {project.language}
+            </span>
+            {/* GitHub link */}
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-orange-600 hover:underline"
+            >
+              <ExternalLink size={12} />
+              Source
+            </a>
+          </div>
+        </div>
 
         <p className="font-mono text-sm text-gray-700 leading-relaxed">
           {project.description}

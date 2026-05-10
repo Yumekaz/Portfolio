@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // Project data — all 8 systems projects with descriptions, technical
-// highlights, and (where applicable) failure notes from the original
-// engineering notes section.
+// highlights, failure notes, metadata (language, status, GitHub URL),
+// sourced from https://github.com/Yumekaz
 // ---------------------------------------------------------------------------
 
 export interface FailureNote {
@@ -12,6 +12,8 @@ export interface FailureNote {
   insightLabel?: string;
 }
 
+export type ProjectStatus = 'Active' | 'Shipped' | 'Hackathon';
+
 export interface Project {
   id: string;
   name: string;
@@ -19,6 +21,9 @@ export interface Project {
   description: string;
   highlights: string[];
   failureNotes?: FailureNote[];
+  githubUrl: string;
+  language: string;
+  status: ProjectStatus;
 }
 
 const projects: Project[] = [
@@ -53,6 +58,9 @@ const projects: Project[] = [
         insightLabel: 'Constraint',
       },
     ],
+    githubUrl: 'https://github.com/Yumekaz/Mini-Docker',
+    language: 'Python',
+    status: 'Active',
   },
   {
     id: 'miniRedis',
@@ -92,6 +100,9 @@ const projects: Project[] = [
           'around, not optimized away.',
       },
     ],
+    githubUrl: 'https://github.com/Yumekaz/Mini-Redis-Cassandra',
+    language: 'Python',
+    status: 'Active',
   },
   {
     id: 'coordination',
@@ -109,6 +120,9 @@ const projects: Project[] = [
       'Causal history to trace incident chains and recovery sequences',
       'Real‑time control‑plane visibility instead of post‑mortem logs',
     ],
+    githubUrl: 'https://github.com/Yumekaz/Coordination-service',
+    language: 'Python',
+    status: 'Active',
   },
   {
     id: 'drt',
@@ -127,6 +141,9 @@ const projects: Project[] = [
       'Failure bundles and trace reports for analysis',
       'Designed to turn flaky concurrency bugs into reproducible cases',
     ],
+    githubUrl: 'https://github.com/Yumekaz/DRT',
+    language: 'Python',
+    status: 'Active',
   },
   {
     id: 'qydrel',
@@ -146,6 +163,9 @@ const projects: Project[] = [
       'Fuzzing and shrinking to find minimal failing programs',
       'Trace replay and regression corpus generation',
     ],
+    githubUrl: 'https://github.com/Yumekaz/Qydrel',
+    language: 'Rust',
+    status: 'Active',
   },
   {
     id: 'orbits',
@@ -164,6 +184,9 @@ const projects: Project[] = [
       'Language coverage analysis and dead‑code confidence scoring',
       'Visual exploration and interactive visualizer',
     ],
+    githubUrl: 'https://github.com/Yumekaz/Orbits',
+    language: 'Python',
+    status: 'Active',
   },
   {
     id: 'wasmForge',
@@ -174,14 +197,16 @@ const projects: Project[] = [
       'JavaScript/TypeScript, SQLite, and PostgreSQL‑style workflows inside the browser. ' +
       'It runs code locally using WebAssembly and browser workers, uses local‑first ' +
       'storage through browser‑side persistence, and supports offline‑first experimentation ' +
-      'without depending on a remote runtime. This hackathon product reflects an ' +
-      'interest in local‑first developer infrastructure and browser‑based compute.',
+      'without depending on a remote runtime.',
     highlights: [
       'Runs Python and JS/TS with Pyodide and WebAssembly',
       'Embedded SQLite and PostgreSQL‑like workflows in the browser',
       'Local‑first storage and offline‑first design',
       'Notebook‑style environment for experimentation',
     ],
+    githubUrl: 'https://github.com/Yumekaz/WasmForge',
+    language: 'JavaScript',
+    status: 'Hackathon',
   },
   {
     id: 'autoforge',
@@ -199,6 +224,9 @@ const projects: Project[] = [
       'Separation of generation, review, and audit roles',
       'Deterministic validation stages and evidence of correctness',
     ],
+    githubUrl: 'https://github.com/Yumekaz/AUTOFORGE',
+    language: 'Python',
+    status: 'Hackathon',
   },
 ];
 

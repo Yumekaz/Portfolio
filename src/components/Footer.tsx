@@ -1,6 +1,5 @@
 /**
  * Footer — dark footer with contact links.
- * "NO TRACKING. NO ANALYTICS." is a nice personal stance.
  */
 export default function Footer() {
   return (
@@ -29,6 +28,17 @@ export default function Footer() {
                 className="hover:underline"
               >
                 @Yumekaz
+              </a>
+            </div>
+            <div className="flex gap-4 items-center">
+              <span className="text-orange-600">linkedin</span>
+              <a
+                href="https://www.linkedin.com/in/mihirswarnkar/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                in/mihirswarnkar
               </a>
             </div>
             <div className="flex gap-4 items-center">

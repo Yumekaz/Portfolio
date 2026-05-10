@@ -1,11 +1,18 @@
 import { ChevronRight } from 'lucide-react';
 import projects from '../data/projects';
+import type { ProjectStatus } from '../data/projects';
 import KernelLog from './KernelLog';
 
 interface SidebarProps {
   activeSection: string;
   onSelect: (id: string) => void;
 }
+
+const statusDot: Record<ProjectStatus, string> = {
+  Active: 'bg-green-500',
+  Shipped: 'bg-blue-500',
+  Hackathon: 'bg-purple-500',
+};
 
 /**
  * Sidebar — project navigation list styled as a file‑directory browser.
@@ -28,7 +35,10 @@ export default function Sidebar({ activeSection, onSelect }: SidebarProps) {
                 : 'text-gray-500'
             }`}
           >
-            <span>{project.name}</span>
+            <span className="flex items-center gap-2">
+              <span className={`w-1.5 h-1.5 rounded-full ${statusDot[project.status]}`} />
+              {project.name}
+            </span>
             {activeSection === project.id && <ChevronRight size={14} />}
           </button>
         ))}

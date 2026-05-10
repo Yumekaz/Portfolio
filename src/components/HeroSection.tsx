@@ -1,20 +1,24 @@
 /**
  * HeroSection — the "DEPTH / CORRECTNESS / OBSERVABILITY" intro with
- * the input→process→output flow and an architecture SVG diagram.
+ * the input→process→output flow, a short bio, and an architecture
+ * SVG based on Mini-Redis-Cassandra's actual sharding topology.
  */
 export default function HeroSection() {
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2 border-b border-black">
-      {/* Left column — mantra & I/O flow */}
+      {/* Left column — mantra, bio & I/O flow */}
       <div className="p-8 lg:p-12 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-black">
         <div>
-          <h1 className="font-mono text-4xl md:text-5xl font-bold tracking-tighter leading-none mb-6">
+          <h1 className="font-mono text-4xl md:text-5xl font-bold tracking-tighter leading-none mb-4">
             DEPTH.<br />CORRECTNESS.<br />OBSERVABILITY.
           </h1>
+          <p className="font-mono text-xs text-gray-500 mb-6 max-w-md">
+            Mihir Swarnkar · BTech CSE · India
+          </p>
           <p className="font-mono text-sm text-gray-600 mb-8 max-w-md">
-            {'>'} I build systems from first principles: container runtimes, distributed
-            storage, coordination services, deterministic debugging tools, compiler
-            correctness labs, and codebase intelligence systems.
+            {'>'} I break systems on purpose to understand how they fail — then
+            build them back with evidence. Container runtimes, distributed storage,
+            coordination services, deterministic debuggers, compiler correctness labs.
           </p>
         </div>
 
@@ -36,10 +40,10 @@ export default function HeroSection() {
         </div>
       </div>
 
-      {/* Right column — architecture diagram */}
+      {/* Right column — architecture diagram (Mini-Redis-Cassandra topology) */}
       <div className="bg-gray-50 p-8 flex items-center justify-center relative overflow-hidden">
         <div className="absolute top-2 right-2 font-mono text-[10px] text-gray-400">
-          FIG 1.0: IDEMPOTENCY LAYER
+          FIG 1.0: CONSISTENT HASH RING
         </div>
         <svg viewBox="0 0 400 300" className="w-full h-full max-h-[300px] opacity-90">
           <defs>
@@ -48,30 +52,41 @@ export default function HeroSection() {
             </marker>
           </defs>
 
-          {/* Load Balancer */}
-          <rect x="160" y="20" width="80" height="40" fill="none" stroke="#000" strokeWidth="2" />
-          <text x="200" y="45" textAnchor="middle" fontFamily="monospace" fontSize="10">L7 LB</text>
+          {/* Hash ring */}
+          <circle cx="200" cy="145" r="100" fill="none" stroke="#d4d4d4" strokeWidth="2" strokeDasharray="6 4" />
 
-          {/* Services */}
-          <rect x="50" y="100" width="80" height="60" fill="none" stroke="#000" strokeWidth="2" />
-          <text x="90" y="135" textAnchor="middle" fontFamily="monospace" fontSize="10">Worker A</text>
+          {/* Nodes on ring */}
+          <circle cx="200" cy="45" r="18" fill="#000" stroke="#000" strokeWidth="2" />
+          <text x="200" y="49" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="#fff">N1</text>
+          <text x="200" y="28" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="#666">Leader</text>
 
-          <rect x="160" y="100" width="80" height="60" fill="#000" stroke="#000" strokeWidth="2" />
-          <text x="200" y="135" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="#fff">Leader</text>
+          <circle cx="287" cy="195" r="18" fill="none" stroke="#000" strokeWidth="2" />
+          <text x="287" y="199" textAnchor="middle" fontFamily="monospace" fontSize="9">N2</text>
 
-          <rect x="270" y="100" width="80" height="60" fill="none" stroke="#000" strokeWidth="2" />
-          <text x="310" y="135" textAnchor="middle" fontFamily="monospace" fontSize="10">Worker B</text>
+          <circle cx="113" cy="195" r="18" fill="none" stroke="#000" strokeWidth="2" />
+          <text x="113" y="199" textAnchor="middle" fontFamily="monospace" fontSize="9">N3</text>
 
-          {/* Database */}
-          <path d="M160,220 C160,210 240,210 240,220 L240,260 C240,270 160,270 160,260 Z" fill="none" stroke="#ea580c" strokeWidth="2" />
-          <path d="M160,220 C160,230 240,230 240,220" fill="none" stroke="#ea580c" strokeWidth="2" />
-          <text x="200" y="250" textAnchor="middle" fontFamily="monospace" fontSize="10" fill="#ea580c">Sharded DB</text>
+          {/* Virtual nodes (smaller) */}
+          <circle cx="270" cy="80" r="6" fill="#ea580c" />
+          <text x="285" y="78" fontFamily="monospace" fontSize="7" fill="#ea580c">vn1</text>
+          <circle cx="130" cy="80" r="6" fill="#ea580c" />
+          <text x="112" y="78" fontFamily="monospace" fontSize="7" fill="#ea580c">vn2</text>
+          <circle cx="245" cy="240" r="6" fill="#ea580c" />
+          <text x="260" y="243" fontFamily="monospace" fontSize="7" fill="#ea580c">vn3</text>
+          <circle cx="155" cy="240" r="6" fill="#ea580c" />
+          <text x="136" y="243" fontFamily="monospace" fontSize="7" fill="#ea580c">vn4</text>
 
-          {/* Connections */}
-          <line x1="200" y1="60" x2="200" y2="100" stroke="#000" strokeWidth="1" markerEnd="url(#arrow)" />
-          <line x1="200" y1="60" x2="90" y2="100" stroke="#000" strokeWidth="1" markerEnd="url(#arrow)" />
-          <line x1="200" y1="60" x2="310" y2="100" stroke="#000" strokeWidth="1" markerEnd="url(#arrow)" />
-          <line x1="200" y1="160" x2="200" y2="210" stroke="#000" strokeWidth="1" strokeDasharray="4 2" markerEnd="url(#arrow)" />
+          {/* Replication arrows */}
+          <line x1="216" y1="55" x2="272" y2="182" stroke="#000" strokeWidth="1" strokeDasharray="4 2" markerEnd="url(#arrow)" />
+          <line x1="184" y1="55" x2="128" y2="182" stroke="#000" strokeWidth="1" strokeDasharray="4 2" markerEnd="url(#arrow)" />
+
+          {/* Client */}
+          <rect x="310" y="40" width="70" height="30" fill="none" stroke="#ea580c" strokeWidth="2" />
+          <text x="345" y="59" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="#ea580c">Client</text>
+          <line x1="310" y1="55" x2="220" y2="47" stroke="#ea580c" strokeWidth="1" markerEnd="url(#arrow)" />
+
+          {/* Gossip label */}
+          <text x="200" y="280" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="#999">gossip protocol ↔ heartbeat</text>
         </svg>
       </div>
     </section>
