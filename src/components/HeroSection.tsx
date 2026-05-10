@@ -22,20 +22,31 @@ export default function HeroSection() {
           </p>
         </div>
 
-        <div className="space-y-4 font-mono text-xs">
-          <div className="flex items-center gap-4">
-            <span className="w-20 text-gray-500">INPUT</span>
-            <span className="border border-black px-2 py-1">Ambiguous Reqs</span>
-            <span className="border border-black px-2 py-1">Nondet. Bugs</span>
+        {/* Tech domains — each tied to a real project */}
+        <div className="grid grid-cols-2 gap-px bg-black font-mono text-[11px]">
+          <div className="bg-white p-3">
+            <div className="font-bold mb-1">Linux Internals</div>
+            <div className="text-gray-500">namespaces · cgroups · seccomp</div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="w-20 text-gray-500">PROCESS</span>
-            <span className="border border-black px-2 py-1 bg-black text-white">Systems Design</span>
-            <span className="border border-black px-2 py-1">Python/Rust</span>
+          <div className="bg-white p-3">
+            <div className="font-bold mb-1">Distributed Systems</div>
+            <div className="text-gray-500">raft · gossip · quorum writes</div>
           </div>
-          <div className="flex items-center gap-4">
-            <span className="w-20 text-gray-500">OUTPUT</span>
-            <span className="border border-orange-600 text-orange-600 px-2 py-1 font-bold">Evidence</span>
+          <div className="bg-white p-3">
+            <div className="font-bold mb-1">Compiler Correctness</div>
+            <div className="text-gray-500">bytecode · fuzzing · JIT equiv</div>
+          </div>
+          <div className="bg-white p-3">
+            <div className="font-bold mb-1">Deterministic Debugging</div>
+            <div className="text-gray-500">record/replay · drift detection</div>
+          </div>
+          <div className="bg-white p-3">
+            <div className="font-bold mb-1">Languages</div>
+            <div className="text-orange-600 font-bold">Python · Rust · TypeScript</div>
+          </div>
+          <div className="bg-white p-3">
+            <div className="font-bold mb-1">Infra</div>
+            <div className="text-orange-600 font-bold">WebAssembly · gRPC · OverlayFS</div>
           </div>
         </div>
       </div>
