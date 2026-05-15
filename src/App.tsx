@@ -14,7 +14,7 @@ function App() {
       <SystemHeader />
 
       <main className="max-w-7xl mx-auto border-l border-r border-black min-h-screen">
-        <HeroSection />
+        <HeroSection activeSection={activeSection} />
 
         {/* Case studies — sidebar + document viewer */}
         <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
@@ -22,9 +22,9 @@ function App() {
           <CaseStudyViewer activeSection={activeSection} />
         </div>
 
-        {/* Kernel log sits visually after the case studies on smaller screens */}
+        {/* KernelLog visible on mobile below case studies */}
         <div className="lg:hidden border-t border-black">
-          <KernelLog />
+          <KernelLog activeSection={activeSection} />
         </div>
 
         <Footer />

@@ -9,14 +9,11 @@ interface SidebarProps {
 }
 
 const statusDot: Record<ProjectStatus, string> = {
-  Active: 'bg-green-500',
-  Shipped: 'bg-blue-500',
+  Active:    'bg-green-500',
+  Shipped:   'bg-blue-500',
   Hackathon: 'bg-purple-500',
 };
 
-/**
- * Sidebar — project navigation list styled as a file‑directory browser.
- */
 export default function Sidebar({ activeSection, onSelect }: SidebarProps) {
   return (
     <aside className="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-black bg-gray-50">
@@ -44,8 +41,8 @@ export default function Sidebar({ activeSection, onSelect }: SidebarProps) {
         ))}
       </nav>
 
-      <div className="hidden lg:block">
-        <KernelLog />
+      <div className="hidden lg:block border-t border-gray-200">
+        <KernelLog activeSection={activeSection} />
       </div>
     </aside>
   );
