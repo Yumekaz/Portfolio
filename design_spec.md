@@ -1,108 +1,92 @@
 # Portfolio Design Specification
 
-## Overview
-**Objective**: Build trust through failure documentation and architectural rigor.
-**Aesthetic**: Content-first engineering document.
-**Typography**: Clean, minimal — focused on readability over decoration.
+## Objective
 
----
+Position Mihir for distributed backend systems roles by making the engineering
+evidence easy to scan, inspect, and challenge.
 
-## Structure (Final)
+The site should answer four questions quickly:
 
+1. What kind of engineer is this?
+2. What distributed-systems problems has he actually built?
+3. What failed, and what decision followed?
+4. Where can I inspect the source evidence and limits?
+
+## Positioning
+
+**Distributed backend systems engineer focused on replication, consistency,
+coordination, failure testing, and recovery.**
+
+Runtime systems, compiler correctness, and ML infrastructure appear as adjacent
+work. They support the main story; they do not compete with it for the headline.
+
+## Page structure
+
+```text
+System header
+  └─ role + engineering-notes identity
+Hero
+  ├─ distributed-systems positioning
+  ├─ plain-English scope boundary
+  └─ replication / consistency / failure / recovery focus grid
+Case studies
+  ├─ Coordination-service
+  ├─ Mini-Redis-Cassandra
+  ├─ FailForge
+  ├─ Cairn
+  ├─ DRT
+  ├─ Qydrel
+  ├─ Mini-Docker
+  └─ TinyTantrum
+Engineering notes
+  └─ failure → decision → boundary → source link
+Footer
+  └─ email, GitHub, LinkedIn, resume
 ```
-portfolio/
-├── README.md               # Project readme (development focused)
-├── design_spec.md          # This file
-├── design_reference.html   # Original HTML reference
-├── index.html              # Vite entry point
-├── public/
-│   ├── favicon.jpg
-│   └── favicon.png
-└── src/
-    ├── App.tsx             # Flat section composition
-    ├── index.css           # Global styles
-    ├── main.tsx            # React entry
-    └── sections/
-        ├── Header.tsx
-        ├── EngineeringNotes.tsx
-        ├── CurrentWork.tsx
-        └── Footer.tsx
-```
 
----
+## Case-study contract
 
-## Content Sections
+Every case study must contain:
 
-### 1. Header
-- **Title**: "Building Systems from First Principles"
-- **Intro**: "Building distributed systems from first principles. Documenting failure modes, constraints, and design trade-offs."
-- **Identity**: "BTech CSE | Systems engineering projects with a focus on correctness, failure, and recovery"
-- **Navigation**: Notes → Work → Contact
+- a three-to-five sentence plain-English summary;
+- the problem and system boundary;
+- the important implementation decisions;
+- at least one failure, trade-off, or non-goal;
+- a proof or evidence statement with its provenance;
+- a direct source-repository link.
 
-### 2. Engineering Notes (3 Cards)
+“Implemented” is not itself evidence. A test count, postmortem, benchmark,
+design document, demo, or release record must be named when available. Claims
+that were not independently run during portfolio work must remain labelled as
+repository evidence.
 
-| Card | Title | Project |
-|------|-------|---------|
-| 1 | Split-Brain Was Inevitable | Mini Redis/Cassandra |
-| 2 | fsync() Is a Design Boundary, Not a Detail | Mini Redis/Cassandra |
-| 3 | Signal Propagation Stops at PID 1 | Mini Docker |
+## Engineering-note contract
 
-Each card follows:
-- Project context
-- **What failed** box
-- **Insight/Constraint** box
+Notes are not generic blog posts or feature descriptions. Each card contains:
 
-### 3. Current Work (2 Projects)
+1. **Failure:** what broke or what guarantee was at risk.
+2. **Decision:** what changed and why that trade-off was accepted.
+3. **Boundary:** what the result still does not prove.
+4. **Source:** a direct link to the repository document or postmortem.
 
-| Project | Description | Link |
-|---------|-------------|------|
-| Mini Redis/Cassandra | Distributed key-value store exploring replication, consistency, and failure handling | https://github.com/Yumekaz/Mini-Redis-Cassandra |
-| Mini Docker | Container runtime with namespaces, cgroups, and overlay filesystems | https://github.com/Yumekaz/Mini-Docker |
+Initial notes are sourced from MiniDB, FailForge, Cairn, DuraFlow, DRT, Qydrel,
+and TinyTantrum.
 
-**Scope**: Intentionally scoped systems built to expose failure behavior, durability boundaries, and lifecycle mechanics.
+## Visual language
 
-### 4. Footer
-- **GitHub**: https://github.com/Yumekaz
-- **Email**: mihir.swarnkar722@gmail.com (with subject: Portfolio Inquiry)
-- Feedback invitation text
+- Content-first, monochrome base with orange as the active signal.
+- Lightweight diagrams that show data flow or proof structure.
+- Animations are limited to state changes and must not imply live production
+  telemetry.
+- No fake uptime, performance, user counts, or “production-ready” badges.
+- Mobile layout must preserve the note text and source links before decoration.
 
----
+## Verification checklist
 
-## Design Principles
-
-1. **Content over visuals** — No animations, no gimmicks
-2. **Failure-first narrative** — Document what broke and why
-3. **Depth over breadth** — Two deep projects, not ten shallow ones
-4. **No overclaiming** — Avoid "production-grade", "enterprise", etc.
-5. **Flat structure** — No routing, no state, no abstractions
-
----
-
-## What NOT to add
-
-- ❌ Animations or transitions
-- ❌ More projects (until current ones are deeper)
-- ❌ Metrics or stats
-- ❌ "About Me" fluff
-- ❌ Tech stack badges
-- ❌ Routing / SPA complexity
-
----
-
-## Deployment Checklist
-
-- [x] Structure cleaned (removed dist/, .eslintrc.cjs, vite.svg)
-- [x] README rewritten (project-focused)
-- [x] Real project links added
-- [x] Contact info updated
-- [x] Text hardened (no overclaiming, no apologies)
-- [x] 3 failure cards (4th removed for focus)
-- [ ] Deploy to production
-
----
-
-## Rationale
-
-1. **Pattern Matching**: Senior engineers read RFCs and design docs daily. This mimics their native environment.
-2. **High Signal-to-Noise**: No wasted space. Respect the viewer's time.
-3. **Process over Product**: Showing failure modes proves intellectual honesty.
+- [x] Distributed-systems role is the first message.
+- [x] Case studies lead with Coordination-service and MiniDB.
+- [x] Engineering notes link to repository evidence.
+- [x] Prototype boundaries remain visible.
+- [x] LinkedIn, GitHub, email, and resume are reachable.
+- [ ] Run the portfolio build in an existing dependency environment.
+- [ ] Browser-check desktop and mobile layout before deployment.

@@ -3,11 +3,13 @@ import SystemHeader from './components/SystemHeader';
 import HeroSection from './components/HeroSection';
 import Sidebar from './components/Sidebar';
 import CaseStudyViewer from './components/CaseStudyViewer';
+import EngineeringNotes from './components/EngineeringNotes';
+import OtherWork from './components/OtherWork';
 import KernelLog from './components/KernelLog';
 import Footer from './components/Footer';
 
 function App() {
-  const [activeSection, setActiveSection] = useState('miniDocker');
+  const [activeSection, setActiveSection] = useState('coordination');
 
   return (
     <div className="min-h-screen bg-white text-black font-sans selection:bg-orange-600 selection:text-white">
@@ -21,6 +23,9 @@ function App() {
           <Sidebar activeSection={activeSection} onSelect={setActiveSection} />
           <CaseStudyViewer activeSection={activeSection} />
         </div>
+
+        <EngineeringNotes />
+        <OtherWork />
 
         {/* KernelLog visible on mobile below case studies */}
         <div className="lg:hidden border-t border-black">

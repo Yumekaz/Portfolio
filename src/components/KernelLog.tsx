@@ -19,14 +19,14 @@ const CACHE_TTL = 60 * 60 * 1000;
 
 /** Maps project id → GitHub repo name */
 const REPO_MAP: Record<string, string> = {
-  miniDocker:    'Mini-Docker',
-  miniRedis:     'Mini-Redis-Cassandra',
   coordination:  'Coordination-service',
+  miniRedis:     'Mini-Redis-Cassandra',
+  failforge:     'FAILFORGE',
+  cairn:         'Cairn',
   drt:           'DRT',
   qydrel:        'Qydrel',
-  orbits:        'Orbits',
-  wasmForge:     'WasmForge',
-  autoforge:     'AUTOFORGE',
+  miniDocker:    'Mini-Docker',
+  tinyTantrum:   'TinyTantrum',
 };
 
 function formatDate(iso: string): string {

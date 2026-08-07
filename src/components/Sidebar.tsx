@@ -18,7 +18,7 @@ export default function Sidebar({ activeSection, onSelect }: SidebarProps) {
   return (
     <aside className="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-black bg-gray-50">
       <div className="p-4 border-b border-black font-mono text-xs font-bold bg-white">
-        DIRECTORY ./CASE_STUDIES
+        DIRECTORY ./DISTRIBUTED_SYSTEMS
       </div>
 
       <nav className="flex flex-col">

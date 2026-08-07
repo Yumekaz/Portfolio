@@ -20,14 +20,14 @@ const Defs = () => (
 
 /* ── Diagram metadata ── */
 const LABELS: Record<string, string> = {
-  miniDocker:   'FIG 1.0: CONTAINER ISOLATION',
-  miniRedis:    'FIG 2.0: CONSISTENT HASH RING',
-  coordination: 'FIG 3.0: QUORUM REPLICATION',
-  drt:          'FIG 4.0: RECORD / REPLAY',
-  qydrel:       'FIG 5.0: EQUIVALENCE TESTING',
-  orbits:       'FIG 6.0: DEPENDENCY GRAPH',
-  wasmForge:    'FIG 7.0: WASM EXECUTION',
-  autoforge:    'FIG 8.0: VALIDATION PIPELINE',
+  coordination: 'FIG 1.0: CONTROL-PLANE REPLICATION',
+  miniRedis:    'FIG 2.0: CONSISTENCY PATH',
+  failforge:    'FIG 3.0: FAULT → INVARIANT',
+  cairn:        'FIG 4.0: DURABLE DEPLOYMENT',
+  drt:          'FIG 5.0: RECORD / REPLAY',
+  qydrel:       'FIG 6.0: EQUIVALENCE TESTING',
+  miniDocker:   'FIG 7.0: CONTAINER ISOLATION',
+  tinyTantrum:  'FIG 8.0: REPRODUCIBLE TRAINING',
 };
 
 /* ────────────────────────────────────────────────
@@ -345,13 +345,85 @@ function AutoforgeDiagram() {
   );
 }
 
+function FailForgeDiagram() {
+  return (
+    <svg viewBox="0 0 400 300" className="w-full h-full max-h-[320px]">
+      <Defs />
+      <rect x="30" y="30" width="105" height="42" rx="3" fill="#1a1a1a" />
+      <text x="82" y="55" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="#fff">SEED 42</text>
+      <rect x="145" y="30" width="105" height="42" rx="3" fill="none" stroke="#ea580c" strokeWidth="1.5" />
+      <text x="197" y="55" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="#ea580c">FAULT PLAN</text>
+      <rect x="265" y="30" width="105" height="42" rx="3" fill="none" stroke="#333" strokeWidth="1.5" />
+      <text x="317" y="55" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="#333">CHECKER</text>
+      <line x1="135" y1="51" x2="145" y2="51" stroke="#333" markerEnd="url(#arr)" />
+      <line x1="250" y1="51" x2="265" y2="51" stroke="#333" markerEnd="url(#arr)" />
+      {[90, 200, 310].map((x, i) => (
+        <g key={i}>
+          <circle cx={x} cy="160" r="27" fill={i === 0 ? '#1a1a1a' : 'none'} stroke={i === 0 ? '#ea580c' : '#333'} strokeWidth="1.5" />
+          <text x={x} y="164" textAnchor="middle" fontFamily="monospace" fontSize="8" fill={i === 0 ? '#fff' : '#333'}>NODE {i + 1}</text>
+          <line x1="197" y1="74" x2={x} y2="132" stroke="#ea580c" strokeWidth="1" strokeDasharray="4 3" markerEnd="url(#arrO)" />
+        </g>
+      ))}
+      <rect x="75" y="225" width="250" height="32" rx="3" fill="none" stroke="#ea580c" strokeWidth="1.5" strokeDasharray="5 3" />
+      <text x="200" y="245" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="#ea580c">REPORT → MINIMIZE → REPLAY</text>
+    </svg>
+  );
+}
+
+function CairnDiagram() {
+  return (
+    <svg viewBox="0 0 400 300" className="w-full h-full max-h-[320px]">
+      <Defs />
+      <rect x="35" y="35" width="95" height="38" rx="3" fill="none" stroke="#333" strokeWidth="1.5" />
+      <text x="82" y="58" textAnchor="middle" fontFamily="monospace" fontSize="9">CLI</text>
+      <rect x="153" y="35" width="95" height="38" rx="3" fill="#1a1a1a" stroke="#ea580c" strokeWidth="1.5" />
+      <text x="200" y="58" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="#fff">CAIRND</text>
+      <rect x="270" y="35" width="95" height="38" rx="3" fill="none" stroke="#333" strokeWidth="1.5" />
+      <text x="317" y="58" textAnchor="middle" fontFamily="monospace" fontSize="9">SQLITE</text>
+      <line x1="130" y1="54" x2="153" y2="54" stroke="#333" markerEnd="url(#arr)" />
+      <line x1="248" y1="54" x2="270" y2="54" stroke="#333" markerEnd="url(#arr)" />
+      <rect x="85" y="125" width="230" height="45" rx="3" fill="none" stroke="#ea580c" strokeWidth="1.5" strokeDasharray="5 3" />
+      <text x="200" y="145" textAnchor="middle" fontFamily="monospace" fontSize="9" fill="#ea580c">DURAFLOW STEPS</text>
+      <text x="200" y="159" textAnchor="middle" fontFamily="monospace" fontSize="7" fill="#999">health gate · lease reclaim · resume</text>
+      <line x1="200" y1="73" x2="200" y2="125" stroke="#333" markerEnd="url(#arr)" />
+      <rect x="125" y="215" width="150" height="35" rx="3" fill="#f5f5f5" stroke="#333" strokeWidth="1.5" />
+      <text x="200" y="237" textAnchor="middle" fontFamily="monospace" fontSize="8">MINI-DOCKER</text>
+      <line x1="200" y1="170" x2="200" y2="215" stroke="#ea580c" strokeDasharray="4 3" markerEnd="url(#arrO)" />
+    </svg>
+  );
+}
+
+function TinyTantrumDiagram() {
+  return (
+    <svg viewBox="0 0 400 300" className="w-full h-full max-h-[320px]">
+      <Defs />
+      <rect x="35" y="105" width="90" height="45" rx="3" fill="none" stroke="#333" strokeWidth="1.5" />
+      <text x="80" y="132" textAnchor="middle" fontFamily="monospace" fontSize="8">DATASET</text>
+      <rect x="155" y="85" width="90" height="85" rx="3" fill="#1a1a1a" stroke="#ea580c" strokeWidth="1.5" />
+      <text x="200" y="115" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="#fff">TRAIN</text>
+      <text x="200" y="133" textAnchor="middle" fontFamily="monospace" fontSize="7" fill="#ea580c">CHECKPOINT</text>
+      <text x="200" y="151" textAnchor="middle" fontFamily="monospace" fontSize="7" fill="#fff">RNG + CONFIG</text>
+      <rect x="275" y="105" width="90" height="45" rx="3" fill="none" stroke="#333" strokeWidth="1.5" />
+      <text x="320" y="132" textAnchor="middle" fontFamily="monospace" fontSize="8">EVALUATE</text>
+      <line x1="125" y1="127" x2="155" y2="127" stroke="#333" markerEnd="url(#arr)" />
+      <line x1="245" y1="127" x2="275" y2="127" stroke="#333" markerEnd="url(#arr)" />
+      <rect x="95" y="215" width="210" height="35" rx="3" fill="none" stroke="#ea580c" strokeWidth="1.5" strokeDasharray="5 3" />
+      <text x="200" y="237" textAnchor="middle" fontFamily="monospace" fontSize="8" fill="#ea580c">SEED · ABLATE · REPORT</text>
+    </svg>
+  );
+}
+
 /* ── Diagram map ── */
 const DIAGRAMS: Record<string, () => JSX.Element> = {
-  miniDocker:   MiniDockerDiagram,
-  miniRedis:    MiniRedisDiagram,
   coordination: CoordinationDiagram,
+  miniRedis:    MiniRedisDiagram,
+  failforge:    FailForgeDiagram,
+  cairn:        CairnDiagram,
   drt:          DrtDiagram,
   qydrel:       QydrelDiagram,
+  miniDocker:   MiniDockerDiagram,
+  tinyTantrum:  TinyTantrumDiagram,
+  // Retained for compatibility with older deep links to the broader project shelf.
   orbits:       OrbitsDiagram,
   wasmForge:    WasmForgeDiagram,
   autoforge:    AutoforgeDiagram,

@@ -74,6 +74,9 @@ export default function CaseStudyViewer({ activeSection }: CaseStudyViewerProps)
               <span className={`w-2.5 h-2.5 rounded-full ${langColors[project.language] ?? 'bg-gray-400'}`} />
               {project.language}
             </span>
+            <span className="px-2 py-0.5 border border-gray-300 text-gray-600">
+              {project.focus}
+            </span>
             {/* GitHub link */}
             <a
               href={project.githubUrl}
@@ -90,6 +93,14 @@ export default function CaseStudyViewer({ activeSection }: CaseStudyViewerProps)
         <p className="font-mono text-sm text-gray-700 leading-relaxed">
           {project.description}
         </p>
+
+        <div className="border-l-4 border-orange-600 bg-orange-50 px-4 py-3 font-mono text-xs leading-relaxed">
+          <span className="font-bold text-orange-700">Evidence boundary: </span>
+          {project.proof}
+          <div className="mt-2 text-[10px] text-gray-500">
+            Source map: {project.sourcePath}
+          </div>
+        </div>
 
         <ul className="list-disc list-inside font-mono text-sm space-y-2 marker:text-orange-600">
           {project.highlights.map((h, i) => (
