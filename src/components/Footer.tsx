@@ -43,7 +43,7 @@ export default function Footer() {
             </div>
             <div className="flex gap-4 items-center">
               <span className="text-orange-600">resume</span>
-              <a href="/Portfolio/resume.pdf" download className="hover:underline">
+              <a href="/resume.pdf" download className="hover:underline">
                 Download PDF
               </a>
             </div>

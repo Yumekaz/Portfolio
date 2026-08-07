@@ -1,5 +1,5 @@
 /**
- * HeroSection — the "DEPTH / CORRECTNESS / OBSERVABILITY" intro with
+ * HeroSection — the "DISTRIBUTED / CORRECT / OBSERVABLE" intro with
  * the bio text on the left and a per-project animated architecture
  * diagram on the right that updates when the user selects a project.
  */
@@ -28,13 +28,13 @@ export default function HeroSection({ activeSection }: HeroSectionProps) {
           </p>
           <div className="flex flex-wrap gap-3 font-mono text-xs">
             <a
-              href="#case-studies"
+              href="/projects/"
               className="bg-black px-3 py-2 text-white transition-colors hover:bg-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
             >
               Explore case studies →
             </a>
             <a
-              href="#engineering-notes"
+              href="/notes/"
               className="border border-black px-3 py-2 text-black transition-colors hover:bg-orange-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
             >
               Read the failures
