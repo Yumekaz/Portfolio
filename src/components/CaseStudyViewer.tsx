@@ -55,13 +55,17 @@ function FailureNoteCard({ note }: { note: FailureNote }) {
 export default function CaseStudyViewer({ activeSection }: CaseStudyViewerProps) {
   const project = projects.find((p) => p.id === activeSection);
   if (!project) return null;
+  const projectNumber = String(projects.findIndex((p) => p.id === project.id) + 1).padStart(2, '0');
 
   return (
-    <article className="lg:col-span-9 p-8 lg:p-12">
+    <article className="lg:col-span-9 scroll-mt-12 p-6 sm:p-8 lg:p-12" aria-labelledby="case-study-title">
       <div className="max-w-3xl space-y-6">
         {/* Title + metadata row */}
         <div>
-          <h2 className="text-3xl font-bold font-mono mb-3 tracking-tight">
+          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange-600 mb-3">
+            CASE STUDY / {projectNumber}
+          </p>
+          <h2 id="case-study-title" className="text-2xl sm:text-3xl font-bold font-mono mb-3 tracking-tight">
             {project.title}
           </h2>
           <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
@@ -94,6 +98,17 @@ export default function CaseStudyViewer({ activeSection }: CaseStudyViewerProps)
           {project.description}
         </p>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 border border-black bg-gray-50">
+          <div className="p-4 sm:p-5 md:border-r border-b md:border-b-0 border-black">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-red-700 mb-2">Problem</p>
+            <p className="font-sans text-sm leading-relaxed text-gray-800">{project.problem}</p>
+          </div>
+          <div className="p-4 sm:p-5">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-blue-700 mb-2">Decision</p>
+            <p className="font-sans text-sm leading-relaxed text-gray-800">{project.decision}</p>
+          </div>
+        </div>
+
         <div className="border-l-4 border-orange-600 bg-orange-50 px-4 py-3 font-mono text-xs leading-relaxed">
           <span className="font-bold text-orange-700">Evidence boundary: </span>
           {project.proof}
@@ -102,11 +117,16 @@ export default function CaseStudyViewer({ activeSection }: CaseStudyViewerProps)
           </div>
         </div>
 
-        <ul className="list-disc list-inside font-mono text-sm space-y-2 marker:text-orange-600">
+        <div>
+          <h3 className="font-mono text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">
+            Design surface
+          </h3>
+          <ul className="list-disc list-inside font-mono text-sm space-y-2 marker:text-orange-600">
           {project.highlights.map((h, i) => (
             <li key={i}>{h}</li>
           ))}
-        </ul>
+          </ul>
+        </div>
 
         {/* Failure notes — integrated from the original Engineering Notes */}
         {project.failureNotes && project.failureNotes.length > 0 && (

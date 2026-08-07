@@ -3,7 +3,7 @@
  */
 export default function Footer() {
   return (
-    <footer className="border-t border-black bg-black text-white p-8 font-mono text-sm">
+    <footer id="contact" className="scroll-mt-12 border-t border-black bg-black text-white p-8 font-mono text-sm">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <div className="uppercase tracking-widest text-gray-500 text-xs mb-4">

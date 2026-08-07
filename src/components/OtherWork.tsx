@@ -12,7 +12,7 @@ const otherWork = [
 
 export default function OtherWork() {
   return (
-    <section className="border-t border-black bg-gray-50" id="other-work">
+    <section className="scroll-mt-12 border-t border-black bg-gray-50" id="other-work" data-reveal>
       <div className="p-8 lg:p-10 border-b border-black">
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange-600 mb-3">
           REPOSITORY SHELF / SUPPORTING WORK
@@ -33,11 +33,11 @@ export default function OtherWork() {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`p-6 border-b border-black hover:bg-orange-50 transition-colors ${index % 3 !== 2 ? 'lg:border-r' : ''} ${index % 2 === 0 ? 'md:border-r lg:border-r' : 'md:border-r-0'}`}
+            className={`group p-6 border-b border-black hover:bg-orange-50 transition-colors focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-orange-600 ${index % 3 !== 2 ? 'lg:border-r' : ''} ${index % 2 === 0 ? 'md:border-r lg:border-r' : 'md:border-r-0'}`}
           >
             <div className="flex justify-between gap-4 mb-3">
-              <span className="font-mono text-sm font-bold">{name}</span>
-              <span className="font-mono text-[10px] text-orange-600">↗</span>
+              <span className="font-mono text-sm font-bold transition-colors group-hover:text-orange-700">{name}</span>
+              <span className="font-mono text-[10px] text-orange-600 transition-transform group-hover:translate-x-1">↗</span>
             </div>
             <p className="font-mono text-xs text-gray-600 leading-relaxed">{description}</p>
           </a>

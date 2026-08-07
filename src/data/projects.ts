@@ -16,6 +16,8 @@ export interface Project {
   name: string;
   title: string;
   focus: string;
+  problem: string;
+  decision: string;
   description: string;
   highlights: string[];
   proof: string;
@@ -32,6 +34,10 @@ const projects: Project[] = [
     name: 'Coordination-service',
     title: 'Coordination-service — Replicated Control Plane',
     focus: 'Distributed coordination',
+    problem:
+      'Control-plane state must remain explainable when leaders fail, followers lag, sessions expire, or membership changes.',
+    decision:
+      'Model leadership, leases, watches, committed history, and incident causality as first-class state, then gate operations through replication and quorum paths.',
     description:
       'A coordination engine for hierarchical metadata, sessions, leases, watches, committed operation history, and replicated control-plane state. The system makes leadership, follower lag, recovery, and causal incidents visible instead of hiding them behind a generic key-value API. Its boundaries are explicit: it is a serious local prototype, not a complete consensus proof or a drop-in ZooKeeper replacement.',
     highlights: [
@@ -52,6 +58,10 @@ const projects: Project[] = [
     name: 'Mini-Redis-Cassandra',
     title: 'Mini-Redis-Cassandra — Consistency Under Failure',
     focus: 'Distributed storage',
+    problem:
+      'A replicated store can acknowledge a write while a later read still sees stale or corrupt data.',
+    decision:
+      'Make ownership, quorum feasibility, read/write modes, and prepare/commit boundaries explicit, then validate them with seeded faults.',
     description:
       'An educational distributed key-value store used to explore sharding, replication, membership, and tunable read/write guarantees. Its most valuable artifact is the failure loop: FailForge exposed stale and corrupt reads, the postmortem identified several interacting causes, and the fixes made the consistency boundary explicit. It intentionally does not claim full Raft safety or globally linearizable reads.',
     highlights: [
@@ -89,6 +99,10 @@ const projects: Project[] = [
     name: 'FailForge',
     title: 'FailForge — Deterministic Distributed Failure Testing',
     focus: 'Failure testing',
+    problem:
+      'Random fault injection produces failures that are difficult to reproduce, minimize, or explain.',
+    decision:
+      'Turn seeds and timelines into controlled process, network, filesystem, and clock faults, then check histories against explicit invariants.',
     description:
       'A local failure-testing lab for distributed key-value stores and coordination engines. FailForge turns a seed or scripted timeline into process, network, filesystem, and clock faults, then checks execution histories against explicit invariants. When a run fails, delta debugging reduces the schedule and workload to a smaller explanation.',
     highlights: [
@@ -109,6 +123,10 @@ const projects: Project[] = [
     name: 'Cairn',
     title: 'Cairn — Stateful Deployment Recovery on One Host',
     focus: 'Durable control plane',
+    problem:
+      'A daemon killed mid-deploy can leave runtime state and control-plane metadata disagreeing.',
+    decision:
+      'Use success-only identity, durable leased workflow steps, health gates, and reconciliation while keeping the metadata model deliberately single-node.',
     description:
       'A CLI-first, single-node Linux PaaS that deploys stateful services through Mini-Docker and durable DuraFlow workflows. The interesting problem is not dashboard polish; it is keeping runtime state and control-plane metadata truthful when a candidate deploy fails or the daemon dies halfway through a step. The design explicitly defers multi-node orchestration, TLS termination, and distributed metadata.',
     highlights: [
@@ -129,6 +147,10 @@ const projects: Project[] = [
     name: 'DRT',
     title: 'DRT — Deterministic Concurrency Testing',
     focus: 'Correctness tooling',
+    problem:
+      'Concurrency failures disappear when timing changes, making the original schedule hard to recover.',
+    decision:
+      'Require explicit scheduling points and record deterministic event logs, trading transparent interception for replayable evidence.',
     description:
       'A record-and-replay runtime for Python code that explicitly opts into DRT-managed threads, synchronization primitives, and nondeterministic APIs. It turns a fragile concurrency failure into a trace, replay, failure bundle, and potentially a minimized schedule. The explicit API is a deliberate honesty boundary: arbitrary threading programs are not silently claimed to be controllable.',
     highlights: [
@@ -149,6 +171,10 @@ const projects: Project[] = [
     name: 'Qydrel',
     title: 'Qydrel — Compiler and Runtime Correctness Lab',
     focus: 'Semantic correctness',
+    problem:
+      'A compiler or runtime can silently diverge across interpreters, optimizations, or garbage-collection paths.',
+    decision:
+      'Compare an independent oracle and multiple backends, verify bytecode, replay traces, and shrink metamorphic failures.',
     description:
       'A small Rust language and runtime built around an audit loop rather than language breadth. Programs can be checked by an independent AST oracle, verified before execution, compared across VM backends, replayed through traces, fuzzed with metamorphic variants, and preserved as minimized regressions. The narrow JIT and small language are intentional so the invariants stay inspectable.',
     highlights: [
@@ -169,6 +195,10 @@ const projects: Project[] = [
     name: 'Mini-Docker',
     title: 'Mini-Docker — Linux Runtime Primitives',
     focus: 'Runtime systems',
+    problem:
+      'Learning container isolation requires understanding the kernel primitives and the security boundaries they do not automatically provide.',
+    decision:
+      'Compose namespaces, cgroups, OverlayFS, networking, seccomp, and capabilities behind a small daemon while excluding hostile multi-tenant claims.',
     description:
       'A from-scratch Linux container runtime in Python using namespaces, cgroups v2, OverlayFS, virtual networking, seccomp, capabilities, and a Unix-socket daemon. It is useful here as the execution layer beneath Cairn, while remaining honest that it is not an audited hostile multi-tenant sandbox or a Docker replacement.',
     highlights: [
@@ -199,6 +229,10 @@ const projects: Project[] = [
     name: 'TinyTantrum',
     title: 'TinyTantrum — Reproducible GPT Laboratory',
     focus: 'ML infrastructure',
+    problem:
+      'Training experiments are difficult to trust when interrupted runs, random seeds, and artifacts are not controlled.',
+    decision:
+      'Treat checkpoints, RNG and configuration state, independent evaluation, multi-seed checks, and ablations as part of the experiment contract.',
     description:
       'A from-scratch character-level GPT laboratory that treats training as an inspectable experiment. It includes checkpoint recovery, independent evaluation, multi-seed checks, controlled context and positional ablations, and an interpretability report. It is not presented as a novel architecture or state-of-the-art language model; the contribution is the reproducible engineering loop.',
     highlights: [
