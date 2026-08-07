@@ -29,7 +29,7 @@ export default function Sidebar({ activeSection, onSelect }: SidebarProps) {
             aria-pressed={activeSection === project.id}
             className={`p-4 text-left font-mono text-sm border-b border-gray-200 hover:bg-orange-50 transition-colors flex justify-between items-center focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-orange-600 ${
               activeSection === project.id
-                ? 'bg-white border-l-4 border-l-orange-600'
+                ? 'bg-orange-50 font-bold text-black border-l-4 border-l-orange-600'
                 : 'text-gray-500'
             }`}
           >

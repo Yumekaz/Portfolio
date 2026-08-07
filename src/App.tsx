@@ -9,6 +9,7 @@ import OtherWork from './components/OtherWork';
 import KernelLog from './components/KernelLog';
 import Footer from './components/Footer';
 import RouteHeader from './components/RouteHeader';
+import ProjectDiagram from './components/ProjectDiagram';
 import projects from './data/projects';
 
 type SiteRoute = 'home' | 'projects' | 'notes' | 'other-work';
@@ -52,6 +53,9 @@ function ProjectsPage({ activeSection, onSelect }: { activeSection: string; onSe
           title="Projects built to survive failure."
           description="Full case studies covering the problem, design decision, evidence boundary, and trade-offs behind the systems work. Start with the three flagship dossiers, then inspect the correctness and runtime projects supporting the lane."
         />
+      </div>
+      <div data-reveal className="border-b border-black">
+        <ProjectDiagram activeSection={activeSection} />
       </div>
       <div id="project-directory" data-reveal className="scroll-mt-12 grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
         <Sidebar activeSection={activeSection} onSelect={onSelect} />
@@ -145,7 +149,7 @@ function App() {
       >
         Skip to content
       </a>
-      <SystemHeader />
+      <SystemHeader activeRoute={route} />
       <main id="page-content" className="max-w-7xl mx-auto border-l border-r border-black min-h-screen">
         {page}
       </main>

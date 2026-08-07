@@ -17,6 +17,10 @@ html {
   scroll-behavior: smooth;
 }
 
+.project-diagram svg {
+  max-height: 420px;
+}
+
 [data-reveal] {
   opacity: 0;
   transform: translateY(14px);
