@@ -1,15 +1,16 @@
 /**
  * HeroSection — the "DISTRIBUTED / CORRECT / OBSERVABLE" intro with
- * the bio text on the left and a per-project animated architecture
- * diagram on the right that updates when the user selects a project.
+ * the bio text on the left and an interactive flagship system map on the
+ * right. Detailed per-project architecture diagrams remain on /projects/.
  */
-import ProjectDiagram from './ProjectDiagram';
+import HomepageSystemMap from './HomepageSystemMap';
 
 interface HeroSectionProps {
   activeSection: string;
+  onFocusProject: (id: string) => void;
 }
 
-export default function HeroSection({ activeSection }: HeroSectionProps) {
+export default function HeroSection({ activeSection, onFocusProject }: HeroSectionProps) {
   return (
     <section className="grid grid-cols-1 lg:grid-cols-2 border-b border-black">
       {/* Left column — mantra, bio & I/O flow */}
@@ -71,8 +72,8 @@ export default function HeroSection({ activeSection }: HeroSectionProps) {
         </div>
       </div>
 
-      {/* Right column — per-project animated architecture diagram */}
-      <ProjectDiagram activeSection={activeSection} />
+      {/* Right column — interactive map of the flagship engineering lane */}
+      <HomepageSystemMap activeSection={activeSection} onSelect={onFocusProject} />
     </section>
   );
 }

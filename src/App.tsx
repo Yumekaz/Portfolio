@@ -32,13 +32,18 @@ function projectFromHash() {
   return projects.some((project) => project.id === requested) ? requested : 'coordination';
 }
 
-function HomePage({ activeSection }: { activeSection: string }) {
+function hasProjectHash() {
+  const requested = window.location.hash.replace(/^#/, '');
+  return projects.some((project) => project.id === requested);
+}
+
+function HomePage({ activeSection, onFocusProject }: { activeSection: string; onFocusProject: (id: string) => void }) {
   return (
     <>
       <div data-reveal>
-        <HeroSection activeSection={activeSection} />
+        <HeroSection activeSection={activeSection} onFocusProject={onFocusProject} />
       </div>
-      <HomeHighlights />
+      <HomeHighlights onFocusProject={onFocusProject} />
       <Footer />
     </>
   );
@@ -125,10 +130,25 @@ function App() {
     return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
+  useEffect(() => {
+    if (route !== 'projects' || !hasProjectHash()) return;
+
+    const timer = window.setTimeout(() => {
+      document.getElementById(activeSection)?.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, [activeSection, route]);
+
   const selectProject = (id: string) => {
     setActiveSection(id);
     window.history.replaceState(null, '', `/projects/#${id}`);
   };
+
+  const focusProject = (id: string) => setActiveSection(id);
 
   let page;
   if (route === 'projects') {
@@ -138,13 +158,13 @@ function App() {
   } else if (route === 'other-work') {
     page = <OtherWorkPage />;
   } else {
-    page = <HomePage activeSection={activeSection} />;
+    page = <HomePage activeSection={activeSection} onFocusProject={focusProject} />;
   }
 
   return (
     <div className="min-h-screen bg-white text-black font-sans selection:bg-orange-600 selection:text-white">
       <a
-        href={route === 'home' ? '/projects/' : '#page-content'}
+        href="#page-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-black focus:px-4 focus:py-3 focus:font-mono focus:text-xs focus:text-white"
       >
         Skip to content

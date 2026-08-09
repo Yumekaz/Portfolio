@@ -21,6 +21,165 @@ html {
   max-height: 420px;
 }
 
+.system-map-grid {
+  background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: linear-gradient(to bottom, black, transparent 92%);
+}
+
+.system-map-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #fb923c;
+  box-shadow: 0 0 12px rgba(251, 146, 60, 0.9);
+}
+
+.system-map-orbit {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.15);
+  stroke-width: 1;
+  stroke-dasharray: 2 9;
+}
+
+.system-map-orbit-inner {
+  stroke: rgba(249, 115, 22, 0.28);
+  stroke-dasharray: 1 11;
+}
+
+.system-map-route path {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.24);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 10;
+  transition: stroke 300ms ease, opacity 300ms ease, stroke-width 300ms ease;
+}
+
+.system-map-route {
+  opacity: 0.65;
+  transition: opacity 300ms ease;
+}
+
+.system-map-route.is-active {
+  opacity: 1;
+}
+
+.system-map-route.is-active path {
+  stroke: #f97316;
+  stroke-width: 2.5;
+  animation: systemMapFlow 2.6s linear infinite;
+}
+
+.system-map-pulse {
+  fill: #fb923c;
+  opacity: 0;
+}
+
+.system-map-route.is-active .system-map-pulse {
+  opacity: 1;
+  filter: drop-shadow(0 0 5px rgba(251, 146, 60, 0.9));
+  animation: systemMapPulse 1.8s ease-in-out infinite;
+}
+
+.system-map-core-halo {
+  fill: none;
+  stroke: rgba(249, 115, 22, 0.2);
+  stroke-width: 1;
+  stroke-dasharray: 2 8;
+  animation: systemMapOrbit 12s linear infinite;
+  transform-origin: 320px 220px;
+}
+
+.system-map-core-ring {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 1;
+  stroke-dasharray: 1 5;
+}
+
+.system-map-core-label,
+.system-map-core-subtitle,
+.system-map-node-index,
+.system-map-node-label,
+.system-map-caption {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.system-map-core-label {
+  fill: white;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+}
+
+.system-map-core-subtitle {
+  fill: rgba(255, 255, 255, 0.7);
+  font-size: 9px;
+  letter-spacing: 0.28em;
+}
+
+.system-map-node-circle {
+  fill: #171717;
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 1.5;
+  transition: fill 300ms ease, stroke 300ms ease;
+}
+
+.system-map-node-halo {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 1;
+  transition: stroke 300ms ease, r 300ms ease;
+}
+
+.system-map-node.is-active .system-map-node-circle {
+  fill: #ea580c;
+  stroke: #fed7aa;
+}
+
+.system-map-node.is-active .system-map-node-halo {
+  stroke: rgba(249, 115, 22, 0.65);
+  animation: systemMapNodePulse 2.2s ease-in-out infinite;
+}
+
+.system-map-node-index {
+  fill: rgba(255, 255, 255, 0.55);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+}
+
+.system-map-node-label {
+  fill: white;
+  font-size: 8px;
+  letter-spacing: 0.12em;
+}
+
+.system-map-caption {
+  fill: rgba(255, 255, 255, 0.45);
+  font-size: 8px;
+  letter-spacing: 0.2em;
+}
+
+@keyframes systemMapFlow {
+  to {
+    stroke-dashoffset: -45;
+  }
+}
+
+@keyframes systemMapPulse {
+  0%, 100% { transform: scale(0.8); opacity: 0.35; }
+  50% { transform: scale(1.6); opacity: 1; }
+}
+
+@keyframes systemMapOrbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes systemMapNodePulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
 [data-reveal] {
   opacity: 0;
   transform: translateY(14px);
@@ -50,5 +209,19 @@ html {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  /* SVG SMIL animations are not governed by animation-duration. Hide the
+     animation nodes so the architecture diagrams remain visible but static. */
+  .project-diagram svg animate,
+  .project-diagram svg animateTransform {
+    display: none;
+  }
+
+  .system-map-route.is-active path,
+  .system-map-core-halo,
+  .system-map-node.is-active .system-map-node-halo,
+  .system-map-route.is-active .system-map-pulse {
+    animation: none;
   }
 }

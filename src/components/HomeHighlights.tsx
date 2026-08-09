@@ -2,7 +2,11 @@ import projects from '../data/projects';
 
 const featuredProjects = projects.slice(0, 3);
 
-export default function HomeHighlights() {
+interface HomeHighlightsProps {
+  onFocusProject: (id: string) => void;
+}
+
+export default function HomeHighlights({ onFocusProject }: HomeHighlightsProps) {
   return (
     <section className="border-t border-black" data-reveal>
       <div className="grid grid-cols-1 lg:grid-cols-4 border-b border-black">
@@ -30,6 +34,8 @@ export default function HomeHighlights() {
             <a
               key={project.id}
               href={`/projects/#${project.id}`}
+              onMouseEnter={() => onFocusProject(project.id)}
+              onFocus={() => onFocusProject(project.id)}
               className={`group p-6 lg:p-8 border-b md:border-b-0 border-black hover:bg-orange-50 transition-colors focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-orange-600 ${index < 2 ? 'md:border-r' : ''}`}
             >
               <div className="flex items-center justify-between gap-3 mb-5">

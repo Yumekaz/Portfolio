@@ -447,7 +447,7 @@ export default function ProjectDiagram({ activeSection }: Props) {
   const label = LABELS[current] || '';
 
   return (
-    <div className="project-diagram hidden sm:flex bg-gray-50 p-4 sm:p-8 items-center justify-center relative overflow-hidden min-h-[240px] sm:min-h-[460px]">
+    <div className="project-diagram flex bg-gray-50 p-3 sm:p-8 items-center justify-center relative overflow-hidden min-h-[260px] sm:min-h-[460px]">
       <div className="absolute top-3 right-4 font-mono text-[10px] text-gray-400 tracking-wider">
         {label}
       </div>
