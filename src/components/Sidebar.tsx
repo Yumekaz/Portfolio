@@ -16,12 +16,12 @@ const statusDot: Record<ProjectStatus, string> = {
 
 export default function Sidebar({ activeSection, onSelect }: SidebarProps) {
   return (
-    <aside className="lg:col-span-3 border-b lg:border-b-0 lg:border-r border-black bg-gray-50">
+    <aside className="project-sidebar lg:col-span-3">
       <div className="p-4 border-b border-black font-mono text-xs font-bold bg-white">
-        DIRECTORY ./DISTRIBUTED_SYSTEMS
+        PROJECT INDEX / 08
       </div>
 
-      <nav className="flex flex-col">
+      <nav className="project-index" aria-label="Select a case study">
         {projects.map((project) => (
           <button
             key={project.id}

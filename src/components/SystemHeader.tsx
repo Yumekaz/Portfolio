@@ -1,43 +1,124 @@
-/**
- * SystemHeader — sticky navigation for the public portfolio routes.
- */
+import { ArrowUpRight, Menu, X, Pause, Play } from "lucide-react";
+import { useEffect, useState } from "react";
+import { siteUrl } from "../lib/paths";
+
 const navItems = [
-  ['/projects/', 'Projects', 'projects'],
-  ['/notes/', 'Notes', 'notes'],
-  ['/other-work/', 'Other work', 'other-work'],
-  ['/#contact', 'Contact', 'contact'],
+  ["projects/", "Work", "projects"],
+  ["notes/", "Field notes", "notes"],
+  ["other-work/", "Explorations", "other-work"],
 ] as const;
 
-interface SystemHeaderProps {
+interface Props {
   activeRoute: string;
+  reducedMotion: boolean;
+  systemReduced: boolean;
+  onToggleMotion: () => void;
 }
 
-export default function SystemHeader({ activeRoute }: SystemHeaderProps) {
-  const linkClass = (route: string) => route === activeRoute
-    ? 'text-black font-bold border-b-2 border-orange-600 pb-1'
-    : 'text-gray-500 hover:text-orange-600';
+export default function SystemHeader({
+  activeRoute,
+  reducedMotion,
+  systemReduced,
+  onToggleMotion,
+}: Props) {
+  const [menuOpen, setMenuOpen] = useState(false);
+  useEffect(() => {
+    const close = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMenuOpen(false);
+        document.getElementById("menu-toggle")?.focus();
+      }
+    };
+    if (menuOpen) window.addEventListener("keydown", close);
+    return () => window.removeEventListener("keydown", close);
+  }, [menuOpen]);
 
   return (
-    <header className="border-b border-black flex flex-wrap justify-between items-center gap-x-4 gap-y-2 px-4 py-2 font-mono text-xs uppercase tracking-widest sticky top-0 bg-white z-50">
-      <div className="flex items-center gap-4">
-        <a href="/" className="flex items-center gap-2 hover:text-orange-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600">
-          <span className="w-2 h-2 bg-orange-600 rounded-full" />
-          Distributed Systems / Engineering Notes
+    <header className="site-header">
+      <div className="header-inner">
+        <a
+          href={siteUrl()}
+          className="identity"
+          aria-label="Mihir Swarnkar, homepage"
+        >
+          <span className="monogram">
+            ms<span>.</span>
+          </span>
+          <span className="identity-copy">
+            Mihir Swarnkar<span>Distributed systems engineer</span>
+          </span>
         </a>
-        <span className="hidden md:inline text-gray-500">Region: Asia/Kolkata</span>
-      </div>
-      <div className="w-full lg:w-auto min-w-0 flex flex-wrap items-center justify-between lg:justify-end gap-x-6 gap-y-2">
-        <span className="text-orange-600 font-bold whitespace-normal">Role: Distributed Backend Engineer</span>
-        <nav aria-label="Primary navigation" className="hidden lg:flex items-center gap-4 text-[10px] tracking-normal">
+        <nav className="desktop-nav" aria-label="Primary navigation">
           {navItems.map(([href, label, route]) => (
-            <a key={href} href={href} aria-current={activeRoute === route ? 'page' : undefined} className={`${linkClass(route)} focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600`}>{label}</a>
+            <a
+              key={route}
+              href={siteUrl(href)}
+              aria-current={activeRoute === route ? "page" : undefined}
+            >
+              {label}
+            </a>
           ))}
         </nav>
+        <div className="header-actions">
+          <button
+            type="button"
+            className="motion-toggle"
+            onClick={onToggleMotion}
+            disabled={systemReduced}
+            aria-label={
+              systemReduced
+                ? "Reduced motion enabled by your device"
+                : reducedMotion
+                  ? "Enable animations"
+                  : "Pause animations"
+            }
+            title={
+              systemReduced
+                ? "Reduced motion follows your device setting"
+                : reducedMotion
+                  ? "Enable animations"
+                  : "Pause animations"
+            }
+          >
+            {reducedMotion ? <Play size={15} /> : <Pause size={15} />}
+          </button>
+          <a className="header-contact" href={siteUrl("#contact")}>
+            Let’s talk <ArrowUpRight size={16} />
+          </a>
+          <button
+            id="menu-toggle"
+            type="button"
+            className="menu-toggle"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <X size={21} /> : <Menu size={21} />}
+          </button>
+        </div>
       </div>
-      <nav aria-label="Mobile navigation" className="flex lg:hidden w-full items-center gap-5 overflow-x-auto border-t border-gray-200 pt-2 text-[10px] tracking-normal whitespace-nowrap">
-        {navItems.map(([href, label, route]) => (
-          <a key={href} href={href} aria-current={activeRoute === route ? 'page' : undefined} className={`${linkClass(route)} focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600`}>{label}</a>
+      <nav
+        id="mobile-navigation"
+        className="mobile-nav"
+        hidden={!menuOpen}
+        aria-label="Mobile navigation"
+      >
+        {navItems.map(([href, label, route], index) => (
+          <a
+            key={route}
+            href={siteUrl(href)}
+            aria-current={activeRoute === route ? "page" : undefined}
+          >
+            <span>0{index + 1}</span>
+            {label}
+            <ArrowUpRight size={18} />
+          </a>
         ))}
+        <a href={siteUrl("#contact")} onClick={() => setMenuOpen(false)}>
+          <span>04</span>Contact
+          <ArrowUpRight size={18} />
+        </a>
       </nav>
     </header>
   );

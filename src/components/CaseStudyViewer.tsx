@@ -58,8 +58,8 @@ export default function CaseStudyViewer({ activeSection }: CaseStudyViewerProps)
   const projectNumber = String(projects.findIndex((p) => p.id === project.id) + 1).padStart(2, '0');
 
   return (
-    <article id={project.id} className="lg:col-span-9 scroll-mt-24 p-6 sm:p-8 lg:p-12" aria-labelledby="case-study-title">
-      <div className="max-w-3xl space-y-6">
+    <article id={project.id} className="case-study lg:col-span-9" aria-labelledby="case-study-title">
+      <div key={project.id} className="case-content max-w-3xl space-y-6">
         {/* Title + metadata row */}
         <div>
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange-600 mb-3">

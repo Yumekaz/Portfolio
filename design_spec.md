@@ -90,3 +90,19 @@ and TinyTantrum.
 - [x] LinkedIn, GitHub, email, and resume are reachable.
 - [ ] Run the portfolio build in an existing dependency environment.
 - [ ] Browser-check desktop and mobile layout before deployment.
+
+## Visual refresh / October 2026
+
+The current implementation evolves the original monochrome/orange identity into
+a warm paper palette with dark olive diagram and contact surfaces. Manrope is
+used for large headings and readable body text; IBM Plex Mono marks metadata,
+source labels, and small technical annotations. Existing project diagrams remain
+precise SVGs rather than decorative images.
+
+Motion includes brief headline/reveal transitions, hover feedback, and slow
+illustrative diagram loops. The persistent header control and system reduced-
+motion preference disable animation, including explicit SVG SMIL pausing. The
+map represents project relationships, never live operational metrics.
+
+Build checks now cover both root hosting and GitHub Pages base paths. Desktop and
+phone-width browser checks are documented in `docs/VISUAL_REFRESH.md`.

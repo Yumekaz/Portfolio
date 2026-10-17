@@ -1,47 +1,65 @@
-import { useEffect, useState } from 'react';
-import SystemHeader from './components/SystemHeader';
-import HeroSection from './components/HeroSection';
-import HomeHighlights from './components/HomeHighlights';
-import Sidebar from './components/Sidebar';
-import CaseStudyViewer from './components/CaseStudyViewer';
-import EngineeringNotes from './components/EngineeringNotes';
-import OtherWork from './components/OtherWork';
-import KernelLog from './components/KernelLog';
-import Footer from './components/Footer';
-import RouteHeader from './components/RouteHeader';
-import ProjectDiagram from './components/ProjectDiagram';
-import projects from './data/projects';
+import { useEffect, useRef, useState } from "react";
+import SystemHeader from "./components/SystemHeader";
+import HeroSection from "./components/HeroSection";
+import HomeHighlights from "./components/HomeHighlights";
+import Sidebar from "./components/Sidebar";
+import CaseStudyViewer from "./components/CaseStudyViewer";
+import EngineeringNotes from "./components/EngineeringNotes";
+import OtherWork from "./components/OtherWork";
+import KernelLog from "./components/KernelLog";
+import Footer from "./components/Footer";
+import RouteHeader from "./components/RouteHeader";
+import ProjectDiagram from "./components/ProjectDiagram";
+import projects from "./data/projects";
+import { siteUrl } from "./lib/paths";
+import { useMotionPreference } from "./hooks/useMotionPreference";
 
-type SiteRoute = 'home' | 'projects' | 'notes' | 'other-work';
+type SiteRoute = "home" | "projects" | "notes" | "other-work";
 
 function normalizedPath() {
-  const path = window.location.pathname.replace(/\/+$/, '') || '/';
-  return path === '/Portfolio' ? '/' : path.replace(/^\/Portfolio(?=\/|$)/, '') || '/';
+  const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+  const pathname = window.location.pathname;
+  const relative =
+    base && (pathname === base || pathname.startsWith(`${base}/`))
+      ? pathname.slice(base.length)
+      : pathname;
+  return relative.replace(/\/+$/, "") || "/";
 }
 
 function currentRoute(): SiteRoute {
   const path = normalizedPath();
-  if (path === '/projects') return 'projects';
-  if (path === '/notes') return 'notes';
-  if (path === '/other-work') return 'other-work';
-  return 'home';
+  if (path === "/projects") return "projects";
+  if (path === "/notes") return "notes";
+  if (path === "/other-work") return "other-work";
+  return "home";
 }
 
 function projectFromHash() {
-  const requested = window.location.hash.replace(/^#/, '');
-  return projects.some((project) => project.id === requested) ? requested : 'coordination';
+  const requested = window.location.hash.replace(/^#/, "");
+  return projects.some((project) => project.id === requested)
+    ? requested
+    : "coordination";
 }
 
 function hasProjectHash() {
-  const requested = window.location.hash.replace(/^#/, '');
+  const requested = window.location.hash.replace(/^#/, "");
   return projects.some((project) => project.id === requested);
 }
 
-function HomePage({ activeSection, onFocusProject }: { activeSection: string; onFocusProject: (id: string) => void }) {
+function HomePage({
+  activeSection,
+  onFocusProject,
+}: {
+  activeSection: string;
+  onFocusProject: (id: string) => void;
+}) {
   return (
     <>
       <div data-reveal>
-        <HeroSection activeSection={activeSection} onFocusProject={onFocusProject} />
+        <HeroSection
+          activeSection={activeSection}
+          onFocusProject={onFocusProject}
+        />
       </div>
       <HomeHighlights onFocusProject={onFocusProject} />
       <Footer />
@@ -49,20 +67,34 @@ function HomePage({ activeSection, onFocusProject }: { activeSection: string; on
   );
 }
 
-function ProjectsPage({ activeSection, onSelect }: { activeSection: string; onSelect: (id: string) => void }) {
+function ProjectsPage({
+  activeSection,
+  onSelect,
+  reducedMotion,
+}: {
+  activeSection: string;
+  onSelect: (id: string) => void;
+  reducedMotion: boolean;
+}) {
   return (
     <>
       <div data-reveal>
         <RouteHeader
           eyebrow="PROJECT DOSSIERS / DISTRIBUTED BACKEND SYSTEMS"
-          title="Projects built to survive failure."
+          title="Built. Broken. Understood."
           description="Full case studies covering the problem, design decision, evidence boundary, and trade-offs behind the systems work. Start with the three flagship dossiers, then inspect the correctness and runtime projects supporting the lane."
         />
       </div>
-      <div data-reveal className="border-b border-black">
-        <ProjectDiagram activeSection={activeSection} />
+      <div className="diagram-panel">
+        <ProjectDiagram
+          activeSection={activeSection}
+          reducedMotion={reducedMotion}
+        />
       </div>
-      <div id="project-directory" data-reveal className="scroll-mt-12 grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
+      <div
+        id="project-directory"
+        className="project-directory grid grid-cols-1 lg:grid-cols-12"
+      >
         <Sidebar activeSection={activeSection} onSelect={onSelect} />
         <CaseStudyViewer activeSection={activeSection} />
       </div>
@@ -94,13 +126,17 @@ function OtherWorkPage() {
 
 function App() {
   const [route] = useState(currentRoute);
+  const { reduced, systemReduced, toggleMotion } = useMotionPreference();
   const [activeSection, setActiveSection] = useState(projectFromHash);
+  const lastScrolledProject = useRef<string | null>(null);
 
   useEffect(() => {
-    const nodes = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+    const nodes = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-reveal]"),
+    );
 
-    if (!('IntersectionObserver' in window)) {
-      nodes.forEach((node) => node.classList.add('is-visible'));
+    if (!("IntersectionObserver" in window)) {
+      nodes.forEach((node) => node.classList.add("is-visible"));
       return;
     }
 
@@ -108,16 +144,16 @@ function App() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
+            entry.target.classList.add("is-visible");
             observer.unobserve(entry.target);
           }
         });
       },
-      { threshold: 0.12 },
+      { threshold: 0, rootMargin: "0px 0px -24px 0px" },
     );
 
-    nodes.forEach((node, index) => {
-      node.style.setProperty('--reveal-delay', `${Math.min(index * 70, 280)}ms`);
+    nodes.forEach((node) => {
+      node.classList.add("reveal-ready");
       observer.observe(node);
     });
 
@@ -125,52 +161,79 @@ function App() {
   }, [route]);
 
   useEffect(() => {
-    const onHashChange = () => setActiveSection(projectFromHash());
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    const onHashChange = () => {
+      if (hasProjectHash()) setActiveSection(projectFromHash());
+    };
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
   }, []);
 
   useEffect(() => {
-    if (route !== 'projects' || !hasProjectHash()) return;
+    if (
+      route !== "projects" ||
+      !hasProjectHash() ||
+      lastScrolledProject.current === activeSection
+    )
+      return;
 
     const timer = window.setTimeout(() => {
+      lastScrolledProject.current = activeSection;
       document.getElementById(activeSection)?.scrollIntoView({
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-        block: 'start',
+        behavior: reduced ? "auto" : "smooth",
+        block: "start",
       });
     }, 0);
 
     return () => window.clearTimeout(timer);
-  }, [activeSection, route]);
+  }, [activeSection, route, reduced]);
+
+  useEffect(() => {
+    if (route === "projects") return;
+    const id = window.location.hash.slice(1);
+    if (id) document.getElementById(id)?.scrollIntoView({ behavior: "auto" });
+  }, [route]);
 
   const selectProject = (id: string) => {
     setActiveSection(id);
-    window.history.replaceState(null, '', `/projects/#${id}`);
+    window.history.replaceState(null, "", siteUrl(`projects/#${id}`));
   };
 
   const focusProject = (id: string) => setActiveSection(id);
 
   let page;
-  if (route === 'projects') {
-    page = <ProjectsPage activeSection={activeSection} onSelect={selectProject} />;
-  } else if (route === 'notes') {
+  if (route === "projects") {
+    page = (
+      <ProjectsPage
+        activeSection={activeSection}
+        onSelect={selectProject}
+        reducedMotion={reduced}
+      />
+    );
+  } else if (route === "notes") {
     page = <NotesPage />;
-  } else if (route === 'other-work') {
+  } else if (route === "other-work") {
     page = <OtherWorkPage />;
   } else {
-    page = <HomePage activeSection={activeSection} onFocusProject={focusProject} />;
+    page = (
+      <HomePage activeSection={activeSection} onFocusProject={focusProject} />
+    );
   }
 
   return (
-    <div className="min-h-screen bg-white text-black font-sans selection:bg-orange-600 selection:text-white">
+    <div className="site-shell">
       <a
         href="#page-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-black focus:px-4 focus:py-3 focus:font-mono focus:text-xs focus:text-white"
       >
         Skip to content
       </a>
-      <SystemHeader activeRoute={route} />
-      <main id="page-content" className="max-w-7xl mx-auto border-l border-r border-black min-h-screen">
+      <SystemHeader
+        activeRoute={route}
+        reducedMotion={reduced}
+        systemReduced={systemReduced}
+        onToggleMotion={toggleMotion}
+      />
+      <main id="page-content" className="page-content" tabIndex={-1}>
         {page}
       </main>
     </div>

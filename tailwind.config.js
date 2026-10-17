@@ -5,7 +5,7 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: { fontFamily: { sans: ['Manrope Variable', 'Arial', 'sans-serif'], mono: ['IBM Plex Mono', 'monospace'] } },
   },
   plugins: [],
 };

@@ -2,9 +2,9 @@
  * ProjectDiagram — renders a unique animated SVG for each project.
  * Swaps with a fade transition when activeSection changes.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-interface Props { activeSection: string; }
+interface Props { activeSection: string; reducedMotion?: boolean; }
 
 /* ── Shared arrow marker ── */
 const Defs = () => (
@@ -429,25 +429,33 @@ const DIAGRAMS: Record<string, () => JSX.Element> = {
   autoforge:    AutoforgeDiagram,
 };
 
-export default function ProjectDiagram({ activeSection }: Props) {
+export default function ProjectDiagram({ activeSection, reducedMotion = false }: Props) {
+  const container = useRef<HTMLDivElement>(null);
   const [current, setCurrent] = useState(activeSection);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
     if (activeSection === current) return;
+    if (reducedMotion) { setCurrent(activeSection); setFading(false); return; }
     setFading(true);
     const t = setTimeout(() => {
       setCurrent(activeSection);
       setFading(false);
     }, 200);
     return () => clearTimeout(t);
-  }, [activeSection, current]);
+  }, [activeSection, current, reducedMotion]);
+
+  useEffect(() => {
+    const svg = container.current?.querySelector('svg');
+    if (reducedMotion) { svg?.setCurrentTime?.(10); svg?.pauseAnimations?.(); }
+    else svg?.unpauseAnimations?.();
+  }, [current, reducedMotion]);
 
   const Diagram = DIAGRAMS[current] || MiniRedisDiagram;
   const label = LABELS[current] || '';
 
   return (
-    <div className="project-diagram flex bg-gray-50 p-3 sm:p-8 items-center justify-center relative overflow-hidden min-h-[260px] sm:min-h-[460px]">
+    <div ref={container} role="img" aria-label={label} className="project-diagram flex bg-gray-50 p-3 sm:p-8 items-center justify-center relative overflow-hidden min-h-[260px] sm:min-h-[460px]">
       <div className="absolute top-3 right-4 font-mono text-[10px] text-gray-400 tracking-wider">
         {label}
       </div>

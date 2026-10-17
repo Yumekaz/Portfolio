@@ -1,67 +1,108 @@
-import projects from '../data/projects';
+import { ArrowUpRight, Network, Database, Workflow } from "lucide-react";
+import projects from "../data/projects";
+import engineeringNotes from "../data/engineeringNotes";
+import { siteUrl } from "../lib/paths";
+const icons = [Network, Database, Workflow];
 
-const featuredProjects = projects.slice(0, 3);
-
-interface HomeHighlightsProps {
+export default function HomeHighlights({
+  onFocusProject,
+}: {
   onFocusProject: (id: string) => void;
-}
-
-export default function HomeHighlights({ onFocusProject }: HomeHighlightsProps) {
+}) {
   return (
-    <section className="border-t border-black" data-reveal>
-      <div className="grid grid-cols-1 lg:grid-cols-4 border-b border-black">
-        <div className="p-6 sm:p-8 lg:p-10 lg:border-r border-black bg-gray-50">
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange-600 mb-3">
-            START HERE / 03 SYSTEMS
+    <>
+      <section id="selected-work" className="selected-work section-space">
+        <div className="section-heading" data-reveal>
+          <div>
+            <p className="eyebrow">01 / SELECTED WORK</p>
+            <h2>Systems with a story.</h2>
+          </div>
+          <p>
+            Built to ask difficult questions.
+            <br />
+            Documented so you can inspect the answers.
           </p>
-          <h2 className="font-mono text-2xl font-bold tracking-tight mb-4">
-            The work behind the claim.
-          </h2>
-          <p className="font-sans text-sm text-gray-600 leading-relaxed">
-            Three projects establish the lane quickly: coordination, storage
-            consistency, and deterministic failure testing.
-          </p>
-          <a
-            href="/projects/"
-            className="inline-block mt-6 font-mono text-xs text-orange-600 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-600"
-          >
-            View all project dossiers →
+        </div>
+        <div className="project-cards">
+          {projects.slice(0, 3).map((project, index) => {
+            const Icon = icons[index];
+            return (
+              <a
+                key={project.id}
+                className="project-card"
+                data-reveal
+                href={siteUrl(`projects/#${project.id}`)}
+                onMouseEnter={() => onFocusProject(project.id)}
+                onFocus={() => onFocusProject(project.id)}
+              >
+                <div className="project-card-top">
+                  <span className="project-number">0{index + 1}</span>
+                  <Icon size={30} strokeWidth={1.2} />
+                  <ArrowUpRight className="card-arrow" size={21} />
+                </div>
+                <div className="project-card-body">
+                  <p className="eyebrow">{project.focus}</p>
+                  <h3>{project.name}</h3>
+                  <p className="project-problem">{project.problem}</p>
+                </div>
+                <div className="project-card-footer">
+                  <span>
+                    {project.language} / {project.status}
+                  </span>
+                  <span>
+                    Case study <ArrowUpRight size={14} />
+                  </span>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+        <div className="section-end" data-reveal>
+          <span>
+            From coordination to correctness. Every claim has a source.
+          </span>
+          <a className="text-link" href={siteUrl("projects/")}>
+            All {projects.length} case studies <ArrowUpRight size={17} />
           </a>
         </div>
-
-        <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3">
-          {featuredProjects.map((project, index) => (
+      </section>
+      <section className="home-notes section-space">
+        <div className="section-heading" data-reveal>
+          <div>
+            <p className="eyebrow">02 / FIELD NOTES</p>
+            <h2>
+              The interesting part?
+              <br />
+              <span className="muted-heading">What went wrong.</span>
+            </h2>
+          </div>
+          <p>
+            Failure, a design decision, and what remains unproven. Notes from
+            the engineering process.
+          </p>
+        </div>
+        <div className="note-teasers">
+          {engineeringNotes.slice(0, 3).map((note, index) => (
             <a
-              key={project.id}
-              href={`/projects/#${project.id}`}
-              onMouseEnter={() => onFocusProject(project.id)}
-              onFocus={() => onFocusProject(project.id)}
-              className={`group p-6 lg:p-8 border-b md:border-b-0 border-black hover:bg-orange-50 transition-colors focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-orange-600 ${index < 2 ? 'md:border-r' : ''}`}
+              key={note.id}
+              href={siteUrl(`notes/#${note.id}`)}
+              className="note-teaser"
+              data-reveal
             >
-              <div className="flex items-center justify-between gap-3 mb-5">
-                <span className="font-mono text-[10px] uppercase tracking-widest text-orange-600">
-                  {project.focus}
-                </span>
-                <span className="font-mono text-[10px] text-gray-400">
-                  0{index + 1}
-                </span>
+              <span className="note-index">0{index + 1}</span>
+              <div>
+                <p className="eyebrow">{note.category}</p>
+                <h3>{note.title}</h3>
+                <p className="note-project">{note.project}</p>
               </div>
-              <h3 className="font-mono text-lg font-bold leading-snug mb-4 group-hover:text-orange-700">
-                {project.name}
-              </h3>
-              <p className="font-sans text-sm text-gray-700 leading-relaxed mb-4">
-                {project.problem}
-              </p>
-              <p className="font-mono text-[10px] text-gray-500 leading-relaxed">
-                Decision: {project.decision}
-              </p>
-              <span className="inline-block mt-6 font-mono text-[10px] text-orange-600">
-                Open dossier →
-              </span>
+              <ArrowUpRight size={22} />
             </a>
           ))}
         </div>
-      </div>
-    </section>
+        <a href={siteUrl("notes/")} className="text-link notes-all" data-reveal>
+          Open the notebook <ArrowUpRight size={17} />
+        </a>
+      </section>
+    </>
   );
 }

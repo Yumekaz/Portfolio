@@ -63,3 +63,32 @@ src/
 The visual layer should make the engineering argument easier to scan. It should
 not imply production status, invent metrics, or bury the source evidence under
 animation.
+
+## Visual refresh and deployment paths
+
+The warm editorial layout pairs self-hosted Manrope with IBM Plex Mono, retains
+orange as the active signal, and keeps technical evidence and boundaries intact.
+The header includes a persistent pause-animation control; device reduced-motion
+settings take priority. See [the visual review](docs/VISUAL_REFRESH.md) for
+design rationale and verification scope.
+
+For a root-domain host (including the existing Vercel configuration):
+
+```bash
+npm ci
+npm run build
+npm run test:build
+```
+
+For GitHub Pages at `https://yumekaz.github.io/Portfolio/`:
+
+```bash
+npm run build:pages
+VITE_BASE_PATH=/Portfolio/ npm run test:build
+```
+
+Both builds emit physical HTML entrypoints for `/`, `/projects/`, `/notes/`, and
+`/other-work/`, so static-host reloads work. Internal links and downloads follow
+Vite's configured base. `npm run deploy` explicitly builds for GitHub Pages and
+publishes `dist` using the existing `gh-pages` tool; do this only when ready to
+publish. The visual-refresh branch itself does not deploy the public site.

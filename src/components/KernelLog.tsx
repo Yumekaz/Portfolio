@@ -142,7 +142,7 @@ export default function KernelLog({ activeSection }: KernelLogProps) {
         {status === 'ok' && (
           <span className="text-green-500 font-normal text-[10px] flex items-center gap-1">
             <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-            live
+            recent
           </span>
         )}
         {status === 'error' && (

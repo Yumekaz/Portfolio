@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { ArrowUpRight } from 'lucide-react';
+import { siteUrl } from '../lib/paths';
 import projects from '../data/projects';
 
 const flagshipProjects = projects.slice(0, 3);
@@ -27,22 +29,22 @@ export default function HomepageSystemMap({ activeSection, onSelect }: HomepageS
   };
 
   return (
-    <section className="system-map relative flex min-h-[620px] flex-col overflow-hidden bg-[#101010] p-4 text-white sm:p-6 lg:min-h-full lg:p-8" aria-labelledby="system-map-title">
+    <section className="system-map" aria-labelledby="system-map-title">
       <div className="system-map-grid pointer-events-none absolute inset-0 opacity-70" />
       <div className="system-map-glow pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-orange-600/20 blur-3xl" />
 
-      <div className="relative z-10 flex items-start justify-between gap-4 border-b border-white/20 pb-4 font-mono text-[10px] uppercase tracking-[0.18em]">
+      <div className="map-header">
         <div>
-          <p id="system-map-title" className="text-orange-400">System map / flagship systems</p>
-          <p className="mt-2 text-white/50">Failure → trace → proof</p>
+          <p id="system-map-title" className="text-orange-400">Inside the systems</p>
+          <p className="mt-2 text-white/50">INTERACTIVE PROJECT MAP</p>
         </div>
         <div className="flex items-center gap-2 text-right text-white/50">
           <span className="system-map-status-dot" />
-          <span>03 connected</span>
+          <span>03 projects</span>
         </div>
       </div>
 
-      <div className="relative z-10 flex flex-1 items-center justify-center py-5 sm:py-6">
+      <div className="map-graphic">
         <svg className="h-auto w-full max-w-[680px]" viewBox="0 0 640 430" role="img" aria-labelledby="system-map-graphic-title system-map-graphic-desc">
           <title id="system-map-graphic-title">Three flagship systems connected through an evidence loop</title>
           <desc id="system-map-graphic-desc">Coordination, storage, and failure testing converge on a shared loop of failure, trace, proof, and recovery.</desc>
@@ -109,40 +111,39 @@ export default function HomepageSystemMap({ activeSection, onSelect }: HomepageS
             <text x="320" y="375" textAnchor="middle" className="system-map-node-label">VERIFY</text>
           </g>
 
-          <text x="320" y="31" textAnchor="middle" className="system-map-caption">A FAILURE IS ONLY USEFUL WHEN IT BECOMES EVIDENCE</text>
+          <text x="320" y="31" textAnchor="middle" className="system-map-caption">FAILURE / TRACE / PROOF / RECOVERY</text>
         </svg>
       </div>
 
-      <div className="relative z-10 grid grid-cols-1 gap-px bg-white/20 sm:grid-cols-3" role="tablist" aria-label="Flagship systems">
+      <div className="map-selectors" role="group" aria-label="Flagship systems">
         {flagshipProjects.map((project, index) => {
           const isSelected = project.id === selectedId;
           return (
             <button
               key={project.id}
               type="button"
-              role="tab"
-              aria-selected={isSelected}
+              aria-pressed={isSelected}
+              aria-controls="map-thread"
               onClick={() => selectProject(project.id)}
-              onFocus={() => selectProject(project.id)}
-              className={`group min-h-[72px] bg-[#151515] px-3 py-3 text-left font-mono transition-colors hover:bg-orange-950 focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-400 ${isSelected ? 'bg-orange-950' : ''}`}
+              className={`map-selector ${isSelected ? 'is-selected' : ''}`}
             >
-              <span className={`block text-[10px] tracking-widest ${isSelected ? 'text-orange-400' : 'text-white/40'}`}>0{index + 1} / {project.focus}</span>
-              <span className={`mt-2 block text-xs font-bold ${isSelected ? 'text-white' : 'text-white/70 group-hover:text-white'}`}>{project.name}</span>
+              <span className={`block text-[10px] tracking-widest ${isSelected ? 'text-orange-400' : 'text-white/40'}`}>0{index + 1}</span>
+              <span className={`mt-2 block text-xs font-bold ${isSelected ? 'text-white' : 'text-white/70 group-hover:text-white'}`}>{['Coordination', 'Consistency', 'Failure testing'][index]}</span>
             </button>
           );
         })}
       </div>
 
-      <div className="relative z-10 mt-4 flex flex-col gap-4 border-t border-white/20 pt-4 sm:flex-row sm:items-end sm:justify-between" aria-live="polite">
+      <div id="map-thread" className="map-thread" aria-live="polite">
         <div className="max-w-xl">
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-orange-400">Active thread / {selectedProject.focus}</p>
-          <p className="mt-2 font-mono text-sm font-bold text-white">{selectedProject.problem}</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-orange-400">{selectedProject.name}</p>
+          <p className="map-problem">{selectedProject.problem}</p>
         </div>
         <a
-          href={`/projects/#${selectedProject.id}`}
+          href={siteUrl(`projects/#${selectedProject.id}`)}
           className="shrink-0 font-mono text-xs text-orange-400 underline-offset-4 transition-colors hover:text-orange-200 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-400"
         >
-          Open dossier ↗
+          Explore <ArrowUpRight size={14} className="inline" />
         </a>
       </div>
     </section>
