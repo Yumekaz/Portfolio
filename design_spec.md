@@ -106,3 +106,17 @@ map represents project relationships, never live operational metrics.
 
 Build checks now cover both root hosting and GitHub Pages base paths. Desktop and
 phone-width browser checks are documented in `docs/VISUAL_REFRESH.md`.
+
+## The breaking-point edition
+
+The homepage's defining interaction is now a three-replica quorum experiment.
+The visitor can disconnect replicas, attempt writes, observe a rejected write,
+and recover. This illustrative model links directly to the actual case studies;
+it is never presented as a live backend or a consensus proof.
+
+Large editorial typography, paper/vermilion/olive surfaces, and three distinct
+project stories replace the smaller system map and uniform cards. Lime denotes
+available quorum; a peach signal denotes loss of quorum. Text and numbers carry
+the same meaning independently of color. The original evidence data is unchanged.
+
+Current verification and scope: `docs/FAILURE_LAB.md`.

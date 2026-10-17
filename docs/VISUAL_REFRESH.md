@@ -1,5 +1,8 @@
 # Portfolio visual refresh
 
+This records the first pass. The current homepage and its verification are
+described in [the breaking-point edition](FAILURE_LAB.md).
+
 Based on `main` commit `f052347ef9161b7ee1c469b7919fec2a96f7f135`.
 
 ## Review

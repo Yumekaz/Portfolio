@@ -46,22 +46,11 @@ function hasProjectHash() {
   return projects.some((project) => project.id === requested);
 }
 
-function HomePage({
-  activeSection,
-  onFocusProject,
-}: {
-  activeSection: string;
-  onFocusProject: (id: string) => void;
-}) {
+function HomePage() {
   return (
     <>
-      <div data-reveal>
-        <HeroSection
-          activeSection={activeSection}
-          onFocusProject={onFocusProject}
-        />
-      </div>
-      <HomeHighlights onFocusProject={onFocusProject} />
+      <HeroSection />
+      <HomeHighlights />
       <Footer />
     </>
   );
@@ -198,8 +187,6 @@ function App() {
     window.history.replaceState(null, "", siteUrl(`projects/#${id}`));
   };
 
-  const focusProject = (id: string) => setActiveSection(id);
-
   let page;
   if (route === "projects") {
     page = (
@@ -214,9 +201,7 @@ function App() {
   } else if (route === "other-work") {
     page = <OtherWorkPage />;
   } else {
-    page = (
-      <HomePage activeSection={activeSection} onFocusProject={focusProject} />
-    );
+    page = <HomePage />;
   }
 
   return (

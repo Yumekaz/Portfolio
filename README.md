@@ -44,12 +44,15 @@ npm run build
 ```text
 src/
 ├── App.tsx                         # Page composition and active case study
-├── index.css                       # Small global animation/style layer
+├── index.css                       # Shared layout and reading styles
+├── signature.css                   # Editorial homepage and experiment
+├── lib/failureLab.ts               # Deterministic quorum model
 ├── data/
 │   ├── projects.ts                 # Flagship project summaries and evidence maps
 │   └── engineeringNotes.ts         # Failure → decision → boundary notes
 └── components/
-    ├── HeroSection.tsx             # Role positioning and systems focus
+    ├── HeroSection.tsx             # Breaking-point introduction
+    ├── FailureLab.tsx              # Interactive failure/recovery experiment
     ├── Sidebar.tsx                 # Case-study navigation
     ├── CaseStudyViewer.tsx         # Project proof and limits
     ├── EngineeringNotes.tsx        # Linkable engineering-note cards
@@ -63,6 +66,15 @@ src/
 The visual layer should make the engineering argument easier to scan. It should
 not imply production status, invent metrics, or bury the source evidence under
 animation.
+
+## The breaking-point edition
+
+The homepage includes an interactive two-of-three quorum illustration: disconnect
+replicas, attempt writes, observe rejection, and recover. It is deliberately a
+frontend model; the real source projects and their limits are linked alongside it.
+Run `npm run test:lab` to check its state transitions.
+
+See [the design and verification notes](docs/FAILURE_LAB.md) for the current edition.
 
 ## Visual refresh and deployment paths
 
