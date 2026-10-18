@@ -3,7 +3,8 @@
 This is the public portfolio for a distributed backend systems engineer focused
 on replication, consistency, coordination, failure testing, and recovery.
 
-The site is intentionally content-first. It presents a small set of flagship
+The visual direction is **Order under pressure**: sculptural imagery, oversized
+type, and a working failure experiment. It presents a small set of flagship
 case studies and engineering notes drawn from the actual repositories. Each
 note follows the same shape:
 
@@ -45,13 +46,15 @@ npm run build
 src/
 ├── App.tsx                         # Page composition and active case study
 ├── index.css                       # Shared layout and reading styles
-├── signature.css                   # Editorial homepage and experiment
+├── signature.css                   # Quorum experiment structure
+├── pressure.css                    # Current art direction and responsive styles
 ├── lib/failureLab.ts               # Deterministic quorum model
 ├── data/
 │   ├── projects.ts                 # Flagship project summaries and evidence maps
 │   └── engineeringNotes.ts         # Failure → decision → boundary notes
 └── components/
-    ├── HeroSection.tsx             # Breaking-point introduction
+    ├── HeroSection.tsx             # Order under pressure introduction
+    ├── PressureScene.tsx           # Layered artwork driven by replica state
     ├── FailureLab.tsx              # Interactive failure/recovery experiment
     ├── Sidebar.tsx                 # Case-study navigation
     ├── CaseStudyViewer.tsx         # Project proof and limits
@@ -67,14 +70,21 @@ The visual layer should make the engineering argument easier to scan. It should
 not imply production status, invent metrics, or bury the source evidence under
 animation.
 
-## The breaking-point edition
+## Order under pressure
 
 The homepage includes an interactive two-of-three quorum illustration: disconnect
 replicas, attempt writes, observe rejection, and recover. It is deliberately a
 frontend model; the real source projects and their limits are linked alongside it.
 Run `npm run test:lab` to check its state transitions.
 
-See [the design and verification notes](docs/FAILURE_LAB.md) for the current edition.
+The hero and lab share this state. Three custom sculptural studies introduce
+coordination, storage, and failure testing; a large vermilion manifesto and
+field journal complete the homepage. Motion can be paused, and the artwork
+works without WebGL.
+
+See [the current design and verification notes](docs/PRESSURE_EDITION.md) and
+[artwork provenance](docs/ART_DIRECTION.md). The model contract remains in
+[the failure lab notes](docs/FAILURE_LAB.md).
 
 ## Visual refresh and deployment paths
 

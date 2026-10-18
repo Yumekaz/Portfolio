@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useReducer } from "react";
 import SystemHeader from "./components/SystemHeader";
 import HeroSection from "./components/HeroSection";
+import FailureLab from "./components/FailureLab";
+import { initialLab, labReducer } from "./lib/failureLab";
 import HomeHighlights from "./components/HomeHighlights";
 import Sidebar from "./components/Sidebar";
 import CaseStudyViewer from "./components/CaseStudyViewer";
@@ -46,10 +48,16 @@ function hasProjectHash() {
   return projects.some((project) => project.id === requested);
 }
 
-function HomePage() {
+function HomePage({ reducedMotion }: { reducedMotion: boolean }) {
+  const [state, dispatch] = useReducer(labReducer, undefined, initialLab);
   return (
     <>
-      <HeroSection />
+      <HeroSection
+        state={state}
+        dispatch={dispatch}
+        reducedMotion={reducedMotion}
+      />
+      <FailureLab state={state} dispatch={dispatch} />
       <HomeHighlights />
       <Footer />
     </>
@@ -201,11 +209,11 @@ function App() {
   } else if (route === "other-work") {
     page = <OtherWorkPage />;
   } else {
-    page = <HomePage />;
+    page = <HomePage reducedMotion={reduced} />;
   }
 
   return (
-    <div className="site-shell">
+    <div className="site-shell" data-route={route}>
       <a
         href="#page-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-black focus:px-4 focus:py-3 focus:font-mono focus:text-xs focus:text-white"

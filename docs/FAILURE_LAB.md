@@ -1,5 +1,8 @@
 # The breaking-point edition
 
+Historical design notes for the previous edition. The reducer contract below
+still applies; current visuals and verification are in [PRESSURE_EDITION.md](PRESSURE_EDITION.md).
+
 ## Design
 
 The homepage now leads with “Built for the breaking point.” Oversized Manrope,

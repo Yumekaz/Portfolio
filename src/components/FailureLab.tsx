@@ -1,4 +1,3 @@
-import { useReducer } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -7,11 +6,16 @@ import {
   Unplug,
   X,
 } from "lucide-react";
-import { initialLab, labReducer } from "../lib/failureLab";
+import type { LabState, LabAction } from "../lib/failureLab";
 import { siteUrl } from "../lib/paths";
 
-export default function FailureLab() {
-  const [state, dispatch] = useReducer(labReducer, undefined, initialLab);
+export default function FailureLab({
+  state,
+  dispatch,
+}: {
+  state: LabState;
+  dispatch: (action: LabAction) => void;
+}) {
   const online = state.replicas.filter((replica) => replica.online).length;
   const blocked = online < 2;
   const recovered = online === 3 && state.hasFault;
@@ -48,9 +52,24 @@ export default function FailureLab() {
       id="failure-lab"
       aria-labelledby="lab-title"
     >
+      <div className="lab-chapter" data-reveal>
+        <p className="eyebrow">01 / CAUSE & CONSEQUENCE</p>
+        <h2>
+          Pull a thread.
+          <br />
+          <span>See what holds.</span>
+        </h2>
+        <p>
+          The sculpture is a metaphor.
+          <br />
+          This experiment shows the rule behind it:
+          <br />
+          <strong>two acknowledgements out of three.</strong>
+        </p>
+      </div>
       <div className="lab-topline">
         <span className="eyebrow">
-          <span className="lab-led" /> THE FAILURE LAB
+          <span className="lab-led" /> THE PRESSURE TEST
         </span>
         <span className="lab-model-label">
           INTERACTIVE MODEL / 2 OF 3 QUORUM

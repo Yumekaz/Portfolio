@@ -11,11 +11,11 @@ export default function Footer() {
     <footer id="contact" className="site-footer">
       <div className="footer-top" data-reveal>
         <div>
-          <p className="eyebrow">03 / START A CONVERSATION</p>
+          <p className="eyebrow">05 / THE NEXT INTERESTING PROBLEM</p>
           <h2>
-            Good systems start
+            Let’s build
             <br />
-            with <span>good questions.</span>
+            <span>something that holds.</span>
           </h2>
         </div>
         <a

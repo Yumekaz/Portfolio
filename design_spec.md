@@ -22,27 +22,15 @@ work. They support the main story; they do not compete with it for the headline.
 
 ## Page structure
 
-```text
-System header
-  └─ role + engineering-notes identity
-Hero
-  ├─ distributed-systems positioning
-  ├─ plain-English scope boundary
-  └─ replication / consistency / failure / recovery focus grid
-Case studies
-  ├─ Coordination-service
-  ├─ Mini-Redis-Cassandra
-  ├─ FailForge
-  ├─ Cairn
-  ├─ DRT
-  ├─ Qydrel
-  ├─ Mini-Docker
-  └─ TinyTantrum
-Engineering notes
-  └─ failure → decision → boundary → source link
-Footer
-  └─ email, GitHub, LinkedIn, resume
-```
+1. Dark hero: “Order under pressure,” layered chrome sculpture, pressure control.
+2. Warm paper experiment: a two-of-three quorum rule visitors can test.
+3. Three large project stories with distinct sculptural artwork.
+4. Vermilion manifesto: “The happy path is only half the design.”
+5. Field journal leading to full engineering notes.
+6. Large contact section with email, GitHub, LinkedIn, and resume.
+
+Separate routes preserve the eight complete case studies, source evidence,
+engineering notes, and broader project shelf.
 
 ## Case-study contract
 
@@ -74,49 +62,19 @@ and TinyTantrum.
 
 ## Visual language
 
-- Content-first, monochrome base with orange as the active signal.
-- Lightweight diagrams that show data flow or proof structure.
-- Animations are limited to state changes and must not imply live production
-  telemetry.
-- No fake uptime, performance, user counts, or “production-ready” badges.
-- Mobile layout must preserve the note text and source links before decoration.
+- Near-black, warm paper, polished metal, amber glass, and vermilion.
+- Oversized Manrope, with IBM Plex Mono for small annotations.
+- Layered artwork in the hero moves with replica connectivity. It is a visual
+  metaphor; the accessible experiment states the actual simplified rule.
+- Generated imagery is labelled as sculptural studies, never system diagrams.
+  Precise SVG diagrams remain inside the case studies.
+- Native scrolling, restrained entrance/reveal motion, image hover response,
+  and a persistent pause control. Device reduced-motion preferences take priority.
+- No invented metrics, production claims, or decorative telemetry.
+- Mobile layouts retain every case-study link, source boundary, and control.
 
-## Verification checklist
+## Verification
 
-- [x] Distributed-systems role is the first message.
-- [x] Case studies lead with Coordination-service and MiniDB.
-- [x] Engineering notes link to repository evidence.
-- [x] Prototype boundaries remain visible.
-- [x] LinkedIn, GitHub, email, and resume are reachable.
-- [ ] Run the portfolio build in an existing dependency environment.
-- [ ] Browser-check desktop and mobile layout before deployment.
-
-## Visual refresh / October 2026
-
-The current implementation evolves the original monochrome/orange identity into
-a warm paper palette with dark olive diagram and contact surfaces. Manrope is
-used for large headings and readable body text; IBM Plex Mono marks metadata,
-source labels, and small technical annotations. Existing project diagrams remain
-precise SVGs rather than decorative images.
-
-Motion includes brief headline/reveal transitions, hover feedback, and slow
-illustrative diagram loops. The persistent header control and system reduced-
-motion preference disable animation, including explicit SVG SMIL pausing. The
-map represents project relationships, never live operational metrics.
-
-Build checks now cover both root hosting and GitHub Pages base paths. Desktop and
-phone-width browser checks are documented in `docs/VISUAL_REFRESH.md`.
-
-## The breaking-point edition
-
-The homepage's defining interaction is now a three-replica quorum experiment.
-The visitor can disconnect replicas, attempt writes, observe a rejected write,
-and recover. This illustrative model links directly to the actual case studies;
-it is never presented as a live backend or a consensus proof.
-
-Large editorial typography, paper/vermilion/olive surfaces, and three distinct
-project stories replace the smaller system map and uniform cards. Lime denotes
-available quorum; a peach signal denotes loss of quorum. Text and numbers carry
-the same meaning independently of color. The original evidence data is unchanged.
-
-Current verification and scope: `docs/FAILURE_LAB.md`.
+The current edition's completed checks and their scope are recorded in
+[docs/PRESSURE_EDITION.md](docs/PRESSURE_EDITION.md). Earlier visual review
+notes are historical; the current implementation takes precedence.

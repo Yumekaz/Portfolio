@@ -1,232 +1,171 @@
-import {
-  ArrowRight,
-  ArrowUpRight,
-  Check,
-  GitBranch,
-  Repeat2,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 import projects from "../data/projects";
 import engineeringNotes from "../data/engineeringNotes";
 import { siteUrl } from "../lib/paths";
-
 const stories = [
   {
-    question: "Who gets to lead?",
+    title: "One history.\nMany moving parts.",
+    name: "Coordination-service",
+    image: "coordination",
+    discipline: "CONTROL PLANES / COORDINATION",
     description:
-      "A control plane that makes leadership, leases, and recovery visible — even when the cluster disagrees.",
-    tag: "COORDINATION / REPLICATION",
-    link: "Inside the control plane",
+      "When leaders fail and followers drift, who gets to decide what happened? A control plane that makes those decisions visible.",
+    link: "Explore coordination",
+    footnote: "Leadership · leases · committed history",
   },
   {
-    question: "A write is only half the story.",
+    title: "An answer is only\nas good as its read.",
+    name: "Mini-Redis-Cassandra",
+    image: "storage",
+    discipline: "DISTRIBUTED STORAGE / CONSISTENCY",
     description:
-      "A replicated store, a stale read, and the postmortem that changed how I think about consistency.",
-    tag: "STORAGE / CONSISTENCY",
-    link: "Follow the failure",
+      "A replicated store. An acknowledged write. A stale read. The failure that made the consistency boundary impossible to ignore.",
+    link: "Trace the failure",
+    footnote: "Replication · quorum · persistence",
   },
   {
-    question: "Make the failure repeatable.",
+    title: "Chaos, with\na return address.",
+    name: "FailForge",
+    image: "failforge",
+    discipline: "FAULT INJECTION / VERIFICATION",
     description:
-      "Turn an unpredictable distributed failure into a seed, a timeline, and a smaller explanation.",
-    tag: "FAULT INJECTION / VERIFICATION",
-    link: "Inside the failure lab",
+      "Make the unpredictable reproducible. Turn a distributed failure into a seed, a timeline, and a smaller explanation.",
+    link: "Enter FailForge",
+    footnote: "Seeded faults · invariants · minimization",
   },
 ];
-
-function WorkEvidence({ index }: { index: number }) {
-  if (index === 0)
-    return (
-      <div className="work-evidence coordination-evidence">
-        <div className="evidence-top">
-          <GitBranch size={18} />
-          <span>THE CONTROL-PLANE QUESTION</span>
-        </div>
-        <p className="evidence-quote">
-          One history.
-          <br />
-          <span>
-            Even when the
-            <br />
-            network disagrees.
-          </span>
-        </p>
-        <ol className="protocol-steps">
-          <li>
-            <span>01</span>Leadership
-          </li>
-          <li>
-            <span>02</span>Quorum
-          </li>
-          <li>
-            <span>03</span>Committed history
-          </li>
-        </ol>
-        <span className="evidence-caption">
-          Leadership + leases + incident causality
-        </span>
-      </div>
-    );
-  if (index === 1)
-    return (
-      <div className="work-evidence storage-evidence">
-        <div className="evidence-top">
-          <Repeat2 size={18} />
-          <span>FROM THE SEED-42 POSTMORTEM</span>
-        </div>
-        <div className="consistency-comparison">
-          <div>
-            <span>WRITE</span>
-            <strong>QUORUM</strong>
-            <Check size={17} />
-          </div>
-          <div>
-            <span>READ</span>
-            <strong>ANY</strong>
-            <span className="stale-label">STALE?</span>
-          </div>
-        </div>
-        <p className="evidence-lesson">
-          An acknowledged write does not
-          <br />
-          make every read fresh.
-        </p>
-        <span className="evidence-caption">
-          Repository evidence · read-after-write failures
-        </span>
-      </div>
-    );
-  return (
-    <div className="work-evidence fault-evidence">
-      <div className="evidence-top">
-        <ShieldCheck size={18} />
-        <span>REPRODUCE. REDUCE. UNDERSTAND.</span>
-      </div>
-      <div className="fault-seed">
-        <span>REPLAYABLE INPUT</span>
-        <strong>
-          seed <span>42</span>
-        </strong>
-      </div>
-      <ol className="fault-pipeline">
-        <li>Inject faults</li>
-        <li>Check history</li>
-        <li>Minimize</li>
-      </ol>
-      <span className="evidence-caption">
-        Seeded campaigns + invariant checkers + DDMin
-      </span>
-    </div>
-  );
-}
-
 export default function HomeHighlights() {
   return (
     <>
-      <section id="selected-work" className="selected-work section-space">
-        <div className="section-heading editorial-heading" data-reveal>
-          <div>
-            <p className="eyebrow">01 / SELECTED ENGINEERING</p>
-            <h2>
-              Built to be
-              <br />
-              <span className="muted-heading">looked into.</span>
-            </h2>
+      <section id="selected-work" className="work-gallery">
+        <div className="gallery-intro" data-reveal>
+          <p className="eyebrow">02 / SELECTED SYSTEMS</p>
+          <h2>
+            Nothing hidden.
+            <br />
+            <span>Everything questioned.</span>
+          </h2>
+          <div className="gallery-intro-foot">
+            <span>THREE SYSTEMS. THREE DIFFERENT QUESTIONS.</span>
+            <a href={siteUrl("projects/")}>
+              View all {projects.length} projects <ArrowUpRight size={17} />
+            </a>
           </div>
-          <p>
-            Three projects. Three different questions.
-            <br />
-            The decisions, failures, and evidence
-            <br />
-            are all part of the work.
-          </p>
         </div>
-        <div className="work-stories">
-          {projects.slice(0, 3).map((project, index) => (
-            <article className="work-story" key={project.id} data-reveal>
-              <div className="work-story-copy">
-                <div className="work-story-meta">
-                  <span>0{index + 1}</span>
-                  <span>{stories[index].tag}</span>
-                  <span>{project.language}</span>
-                </div>
-                <p className="work-project-name">{project.name}</p>
-                <h3>{stories[index].question}</h3>
-                <p className="work-story-description">
-                  {stories[index].description}
-                </p>
-                <a
-                  className="story-link"
-                  href={siteUrl(`projects/#${project.id}`)}
-                >
-                  {stories[index].link}
-                  <ArrowUpRight size={20} />
-                </a>
-              </div>
-              <WorkEvidence index={index} />
-            </article>
-          ))}
-        </div>
-        <div className="section-end" data-reveal>
+        {stories.map((story, index) => (
+          <article
+            key={story.image}
+            className={`gallery-project gallery-project-${index + 1}`}
+            data-reveal
+          >
+            <a
+              className="project-art"
+              href={siteUrl(`projects/#${projects[index].id}`)}
+              aria-label={`${story.link}: ${story.name}`}
+            >
+              <img
+                src={siteUrl(`art/${story.image}.webp`)}
+                srcSet={`${siteUrl(`art/${story.image}-small.webp`)} 768w, ${siteUrl(`art/${story.image}.webp`)} 1536w`}
+                sizes="(max-width: 780px) 100vw, 65vw"
+                alt=""
+                loading="lazy"
+                decoding="async"
+                width="1536"
+                height="1024"
+              />
+              <span className="art-index">0{index + 1}</span>
+              <span className="art-open">
+                <ArrowUpRight size={23} />
+                <span>EXPLORE</span>
+              </span>
+              <span className="art-caption">
+                SCULPTURAL STUDY / {story.image.toUpperCase()}
+              </span>
+            </a>
+            <div className="project-story">
+              <p className="eyebrow">{story.discipline}</p>
+              <span className="project-byline">{story.name}</span>
+              <h3>
+                {story.title.split("\n").map((line, i) => (
+                  <span key={i}>{line}</span>
+                ))}
+              </h3>
+              <p className="story-description">{story.description}</p>
+              <a
+                className="gallery-link"
+                href={siteUrl(`projects/#${projects[index].id}`)}
+              >
+                {story.link}
+                <ArrowUpRight size={19} />
+              </a>
+              <p className="project-materials">{story.footnote}</p>
+            </div>
+          </article>
+        ))}
+        <div className="gallery-end">
           <span>
-            Local prototypes. Explicit boundaries. Source-linked evidence.
+            Expressive artwork. Actual engineering.
+            <br />
+            Every case study links to its source and its limits.
           </span>
-          <a className="text-link" href={siteUrl("projects/")}>
-            All {projects.length} case studies <ArrowRight size={18} />
+          <a href={siteUrl("projects/")}>
+            Inspect all the work <ArrowRight size={22} />
           </a>
         </div>
       </section>
-      <section className="engineering-belief section-space" data-reveal>
-        <p className="eyebrow">THE WAY I WORK</p>
-        <p className="belief-statement">
-          The happy path is
+      <section className="manifesto" aria-labelledby="manifesto-title">
+        <div className="manifesto-top">
+          <p className="eyebrow">03 / AN ENGINEERING INSTINCT</p>
+          <span>BUILD → BREAK → UNDERSTAND</span>
+        </div>
+        <h2 id="manifesto-title" data-reveal>
+          The happy path
           <br />
-          only <span>half the design.</span>
-        </p>
-        <div className="belief-detail">
-          <span>Build it. Question it. Break it. Explain it.</span>
+          is only <em>half</em>
+          <br />
+          the design<span>.</span>
+        </h2>
+        <div className="manifesto-bottom">
+          <span className="manifesto-mark" aria-hidden="true">
+            ½
+          </span>
           <p>
-            I care about what a system promises, what it actually does, and the
-            gap between the two. That’s where the useful lessons live.
+            I care about what a system promises,
+            <br />
+            what it actually does, and the gap
+            <br />
+            between the two.
+            <br />
+            <strong>That’s where the useful work lives.</strong>
           </p>
         </div>
       </section>
-      <section className="home-notes section-space">
-        <div className="section-heading" data-reveal>
-          <div>
-            <p className="eyebrow">02 / FIELD NOTES</p>
-            <h2>
-              Notes from
-              <br />
-              <span className="muted-heading">the breaking point.</span>
-            </h2>
-          </div>
-          <p>
-            What failed, what changed,
-            <br />
-            and what remains unproven.
-          </p>
+      <section className="field-journal">
+        <div className="journal-heading" data-reveal>
+          <p className="eyebrow">04 / THE FIELD JOURNAL</p>
+          <h2>Useful scars.</h2>
+          <p>Failures worth keeping a record of.</p>
         </div>
-        <div className="note-teasers">
+        <div className="journal-entries">
           {engineeringNotes.slice(0, 3).map((note, index) => (
             <a
               key={note.id}
+              className="journal-entry"
               href={siteUrl(`notes/#${note.id}`)}
-              className="note-teaser"
               data-reveal
             >
-              <span className="note-index">0{index + 1}</span>
+              <span className="journal-number">0{index + 1}</span>
               <div>
                 <p className="eyebrow">{note.category}</p>
                 <h3>{note.title}</h3>
-                <p className="note-project">{note.project}</p>
+                <p className="journal-project">{note.project}</p>
               </div>
-              <ArrowUpRight size={22} />
+              <ArrowUpRight size={28} strokeWidth={1.3} />
             </a>
           ))}
         </div>
-        <a href={siteUrl("notes/")} className="text-link notes-all" data-reveal>
-          Open the notebook <ArrowUpRight size={17} />
+        <a className="journal-all" href={siteUrl("notes/")}>
+          Read all field notes <ArrowRight size={20} />
         </a>
       </section>
     </>
