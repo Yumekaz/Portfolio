@@ -23,9 +23,24 @@ visible beside the result.
 - **Correctness tooling:** DRT and Qydrel
 - **ML infrastructure:** TinyTantrum
 
-The broader project shelf includes Orbits, WasmForge, MAJA, SILSILA, Skein,
-AeroVoxel, BitNet Triton, and AUTOFORGE. They are supporting evidence rather
-than competing with the distributed-systems narrative on the home page.
+The explorations gallery includes DuraFlow, Orbits, WasmForge, MAJA, SILSILA,
+Skein, AeroVoxel, BitNet Triton, and AUTOFORGE. Each has its own visual study,
+description, category, and repository link.
+
+## Complete portfolio edition
+
+The visual direction extends across every route:
+
+- **Eight case studies:** individual sculptural covers, chapter navigation,
+  architecture diagrams with an enlarge control, decisions, failure records
+  where available, evidence, related notes, and next-project navigation.
+- **Seven field notes:** a searchable, filterable journal with expandable
+  arguments, persistent deep links, and the original source evidence.
+- **Nine explorations:** unique SVG studies, category filters, and gallery/index
+  views with the full original descriptions and repository links.
+
+Responsive layouts, keyboard controls, and the shared animation pause setting
+apply throughout. See [the complete implementation and verification record](docs/FULL_PORTFOLIO.md).
 
 ## Development
 
@@ -48,17 +63,23 @@ src/
 ├── index.css                       # Shared layout and reading styles
 ├── signature.css                   # Quorum experiment structure
 ├── pressure.css                    # Current art direction and responsive styles
+├── interior.css                    # Case studies, field journal, explorations
 ├── lib/failureLab.ts               # Deterministic quorum model
 ├── data/
 │   ├── projects.ts                 # Flagship project summaries and evidence maps
-│   └── engineeringNotes.ts         # Failure → decision → boundary notes
+│   ├── engineeringNotes.ts         # Failure → decision → boundary notes
+│   ├── projectPresentation.ts      # Case artwork and editorial presentation
+│   └── explorations.ts             # Broader project collection
 └── components/
     ├── HeroSection.tsx             # Order under pressure introduction
     ├── PressureScene.tsx           # Layered artwork driven by replica state
     ├── FailureLab.tsx              # Interactive failure/recovery experiment
     ├── Sidebar.tsx                 # Case-study navigation
     ├── CaseStudyViewer.tsx         # Project proof and limits
-    ├── EngineeringNotes.tsx        # Linkable engineering-note cards
+    ├── EngineeringNotes.tsx        # Searchable journal and expanded reading
+    ├── OtherWork.tsx               # Filterable exploration gallery/index
+    ├── ExplorationArt.tsx          # Nine code-native visual studies
+    ├── Artwork.tsx                 # Responsive sculptural images
     ├── ProjectDiagram.tsx          # Lightweight per-project diagrams
     ├── KernelLog.tsx               # Optional recent GitHub commit context
     └── Footer.tsx                  # Contact, LinkedIn, GitHub, resume
@@ -82,7 +103,8 @@ coordination, storage, and failure testing; a large vermilion manifesto and
 field journal complete the homepage. Motion can be paused, and the artwork
 works without WebGL.
 
-See [the current design and verification notes](docs/PRESSURE_EDITION.md) and
+See [the homepage design notes](docs/PRESSURE_EDITION.md),
+[the complete portfolio update](docs/FULL_PORTFOLIO.md), and
 [artwork provenance](docs/ART_DIRECTION.md). The model contract remains in
 [the failure lab notes](docs/FAILURE_LAB.md).
 

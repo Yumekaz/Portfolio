@@ -8,7 +8,7 @@ screenshots, or claims about physical hardware.
 
 Premium studio sculpture, tactile physically plausible materials, editorial
 composition, no text, no logos, no UI, landscape 3:2. Restrained chrome,
-vermilion, amber, warm stone, and charcoal connect the three pieces.
+vermilion, amber, warm stone, and charcoal connect the eight pieces.
 
 ## Prompt briefs and assets
 
@@ -29,3 +29,34 @@ Each tool output was generated at 1536 x 1024. Sharp encoded full-size WebP
 at quality 85 and 768-pixel variants at quality 82. No stock source, downloaded
 third-party art, or fabricated attribution was used. CSS masks, clipped layers,
 and transforms compose the hero; the source illustration itself is unchanged.
+
+## Complete collection additions
+
+Five additional artworks were generated with the same built-in image tool on
+October 18, 2026. The shared brief called for a single museum-quality sculpture,
+landscape 3:2 framing, generous space around the subject, soft studio lighting,
+physically plausible materials and contact shadows, and no text or logos.
+
+- **Cairn:** a balanced stack of dark stone, transparent vermilion resin, and
+  polished metal; recovery as a durable, carefully balanced structure.
+  `public/art/cairn.webp` and `public/art/cairn-small.webp`.
+- **DRT:** matched chrome ribbon forms; repeatable traces as a sculptural pair.
+  `public/art/drt.webp` and `public/art/drt-small.webp`.
+- **Qydrel:** glass and mirrored prisms around a vermilion sphere; one subject
+  viewed through several perspectives. `public/art/qydrel.webp` and
+  `public/art/qydrel-small.webp`.
+- **Mini-Docker:** nested metal structures around a protected center; isolation
+  as an expressive material study. `public/art/runtime.webp` and
+  `public/art/runtime-small.webp`.
+- **TinyTantrum:** repeated glass and chrome forms; reproducibility as a precise
+  sculptural arrangement. `public/art/training.webp` and
+  `public/art/training-small.webp`.
+
+These five outputs were generated at 1536 x 1024 and encoded with Sharp as
+full-size WebP at quality 83 and 768-pixel variants at quality 80. The original
+three images retain their earlier encodings. All eight are labelled as
+sculptural studies within their case studies.
+
+The nine exploration illustrations in `src/components/ExplorationArt.tsx` are
+original code-native SVG compositions. They are decorative visual studies,
+not generated bitmaps or system architecture diagrams.

@@ -1,145 +1,263 @@
-import { ExternalLink } from 'lucide-react';
-import projects from '../data/projects';
-import type { FailureNote, ProjectStatus } from '../data/projects';
+import { useState } from "react";
+import { ArrowDown, ArrowRight, ArrowUpRight, Plus, Minus } from "lucide-react";
+import projects from "../data/projects";
+import engineeringNotes from "../data/engineeringNotes";
+import { projectPresentation } from "../data/projectPresentation";
+import { siteUrl } from "../lib/paths";
+import Artwork from "./Artwork";
+import ProjectDiagram from "./ProjectDiagram";
+import KernelLog from "./KernelLog";
 
-interface CaseStudyViewerProps {
+interface Props {
   activeSection: string;
+  onSelect: (id: string) => void;
+  reducedMotion: boolean;
 }
-
-/** Colour map for status badges */
-const statusStyles: Record<ProjectStatus, string> = {
-  Active: 'bg-green-100 text-green-800 border-green-300',
-  Shipped: 'bg-blue-100 text-blue-800 border-blue-300',
-  Hackathon: 'bg-purple-100 text-purple-800 border-purple-300',
-};
-
-/** Colour map for language dots */
-const langColors: Record<string, string> = {
-  Python: 'bg-blue-500',
-  Rust: 'bg-orange-700',
-  JavaScript: 'bg-yellow-400',
-  TypeScript: 'bg-blue-600',
-};
-
-/**
- * Renders a single failure/insight note block styled like the original
- * engineering notes — red failure box + blue/gray insight box.
- */
-function FailureNoteCard({ note }: { note: FailureNote }) {
-  return (
-    <div className="border border-gray-200 rounded-md overflow-hidden">
-      <div className="bg-gray-100 px-4 py-2 font-mono text-xs font-bold uppercase tracking-wide border-b border-gray-200">
-        {note.title}
-      </div>
-      {/* Failure callout */}
-      <div className="bg-red-50 border-l-4 border-red-600 px-4 py-3 text-sm leading-relaxed font-mono">
-        <span className="font-bold text-red-700">What failed: </span>
-        {note.failure}
-      </div>
-      {/* Insight callout */}
-      <div className="bg-blue-50 border-l-4 border-blue-600 px-4 py-3 text-sm leading-relaxed font-mono">
-        <span className="font-bold text-blue-700">
-          {note.insightLabel ?? 'Insight'}:{' '}
-        </span>
-        {note.insight}
-      </div>
-    </div>
-  );
-}
-
-/**
- * CaseStudyViewer — displays the selected project's case study,
- * including description, technical highlights, metadata (language,
- * status, GitHub link), and integrated failure/insight notes.
- */
-export default function CaseStudyViewer({ activeSection }: CaseStudyViewerProps) {
-  const project = projects.find((p) => p.id === activeSection);
+export default function CaseStudyViewer({
+  activeSection,
+  onSelect,
+  reducedMotion,
+}: Props) {
+  const [activityOpen, setActivityOpen] = useState(false);
+  const [diagramLarge, setDiagramLarge] = useState(false);
+  const index = projects.findIndex((p) => p.id === activeSection);
+  const project = projects[index];
   if (!project) return null;
-  const projectNumber = String(projects.findIndex((p) => p.id === project.id) + 1).padStart(2, '0');
-
+  const visual = projectPresentation[project.id];
+  const number = String(index + 1).padStart(2, "0");
+  const next = projects[(index + 1) % projects.length];
+  const related = engineeringNotes.filter((note) =>
+    visual.notes.includes(note.id),
+  );
+  const jump = (part: string) =>
+    document.getElementById(`${project.id}-${part}`)?.scrollIntoView({
+      behavior: reducedMotion ? "auto" : "smooth",
+      block: "start",
+    });
   return (
-    <article id={project.id} className="case-study lg:col-span-9" aria-labelledby="case-study-title">
-      <div key={project.id} className="case-content max-w-3xl space-y-6">
-        {/* Title + metadata row */}
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-orange-600 mb-3">
-            CASE STUDY / {projectNumber}
-          </p>
-          <h2 id="case-study-title" className="text-2xl sm:text-3xl font-bold font-mono mb-3 tracking-tight">
-            {project.title}
+    <article
+      id={project.id}
+      className={`dossier theme-${visual.theme}`}
+      aria-labelledby="dossier-title"
+    >
+      <div className="dossier-cover">
+        <div className="dossier-cover-copy">
+          <p className="eyebrow">CASE STUDY / {number}</p>
+          <p className="dossier-name">{project.name}</p>
+          <h2 id="dossier-title">
+            {visual.headline[0]}
+            <br />
+            <em>{visual.headline[1]}</em>
           </h2>
-          <div className="flex flex-wrap items-center gap-3 font-mono text-xs">
-            {/* Status badge */}
-            <span className={`px-2 py-0.5 border rounded-sm font-bold ${statusStyles[project.status]}`}>
-              {project.status}
-            </span>
-            {/* Language dot + label */}
-            <span className="flex items-center gap-1.5 text-gray-600">
-              <span className={`w-2.5 h-2.5 rounded-full ${langColors[project.language] ?? 'bg-gray-400'}`} />
-              {project.language}
-            </span>
-            <span className="px-2 py-0.5 border border-gray-300 text-gray-600">
-              {project.focus}
-            </span>
-            {/* GitHub link */}
+          <div className="dossier-metadata">
+            <span>{project.language}</span>
+            <span>{project.status}</span>
+          </div>
+          <a
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="edition-link"
+          >
+            View source <ArrowUpRight size={18} />
+          </a>
+        </div>
+        <div className="dossier-cover-art">
+          <Artwork name={visual.art} eager />
+          <span className="dossier-art-caption">
+            SCULPTURAL STUDY / {visual.material}
+          </span>
+          <span className="dossier-oversize" aria-hidden="true">
+            {number}
+          </span>
+        </div>
+      </div>
+      <nav className="dossier-chapters" aria-label="Case study chapters">
+        <button onClick={() => jump("overview")}>
+          01 <span>Overview</span>
+        </button>
+        <button onClick={() => jump("architecture")}>
+          02 <span>Architecture</span>
+        </button>
+        <button onClick={() => jump("decisions")}>
+          03 <span>Design</span>
+        </button>
+        <button onClick={() => jump("evidence")}>
+          04 <span>Evidence</span>
+        </button>
+        <ArrowDown size={16} />
+      </nav>
+      <div className="dossier-body">
+        <section
+          id={`${project.id}-overview`}
+          className="dossier-overview"
+          data-reveal
+        >
+          <p className="eyebrow">01 / THE QUESTION</p>
+          <h3>{project.title}</h3>
+          <p className="dossier-description">{project.description}</p>
+          <div className="decision-pair">
+            <div>
+              <span>THE TENSION</span>
+              <p>{project.problem}</p>
+            </div>
+            <div>
+              <span>THE CHOICE</span>
+              <p>{project.decision}</p>
+            </div>
+          </div>
+        </section>
+        <section
+          id={`${project.id}-architecture`}
+          className="dossier-architecture"
+          data-reveal
+        >
+          <div className="section-caption">
+            <p className="eyebrow">02 / INSIDE THE SYSTEM</p>
+            <span>{project.focus}</span>
+          </div>
+          <div className="diagram-tools">
+            <button
+              aria-pressed={diagramLarge}
+              onClick={() => setDiagramLarge((value) => !value)}
+            >
+              {diagramLarge ? "Fit diagram" : "Enlarge diagram"}
+              {diagramLarge ? <Minus size={14} /> : <Plus size={14} />}
+            </button>
+          </div>
+          <div
+            className={`diagram-viewport ${diagramLarge ? "diagram-large" : ""}`}
+            tabIndex={diagramLarge ? 0 : undefined}
+            aria-label={
+              diagramLarge
+                ? "Enlarged architecture diagram, scroll horizontally to explore"
+                : undefined
+            }
+          >
+            <ProjectDiagram
+              activeSection={project.id}
+              reducedMotion={reducedMotion}
+            />
+          </div>
+          <p className="diagram-boundary">
+            Conceptual architecture. The source repository defines the
+            implementation and its limits.
+          </p>
+        </section>
+        <section
+          id={`${project.id}-decisions`}
+          className="dossier-design"
+          data-reveal
+        >
+          <p className="eyebrow">03 / DESIGN SURFACE</p>
+          <h3>
+            The details carry
+            <br />
+            <em>the guarantee.</em>
+          </h3>
+          <ol>
+            {project.highlights.map((highlight, i) => (
+              <li key={highlight}>
+                <span>{String(i + 1).padStart(2, "0")}</span>
+                <p>{highlight}</p>
+                <ArrowUpRight size={18} />
+              </li>
+            ))}
+          </ol>
+        </section>
+        {project.failureNotes?.length ? (
+          <section className="dossier-lessons" data-reveal>
+            <p className="eyebrow">FROM THE FAILURE RECORD</p>
+            {project.failureNotes.map((note, i) => (
+              <div className="lesson-spread" key={note.title}>
+                <div className="lesson-heading">
+                  <span>F{String(i + 1).padStart(2, "0")}</span>
+                  <h3>{note.title}</h3>
+                </div>
+                <div className="lesson-columns">
+                  <div>
+                    <h4>What failed</h4>
+                    <p>{note.failure}</p>
+                  </div>
+                  <div>
+                    <h4>{note.insightLabel ?? "Insight"}</h4>
+                    <p>{note.insight}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </section>
+        ) : null}
+        <section
+          id={`${project.id}-evidence`}
+          className="dossier-evidence"
+          data-reveal
+        >
+          <div className="evidence-mark" aria-hidden="true">
+            ↳
+          </div>
+          <div>
+            <p className="eyebrow">04 / WHAT THE EVIDENCE SUPPORTS</p>
+            <h3>
+              A claim needs
+              <br />
+              <em>a boundary.</em>
+            </h3>
+            <p className="evidence-proof">{project.proof}</p>
+            <p className="source-map">
+              <span>REPOSITORY SOURCE MAP</span>
+              {project.sourcePath}
+            </p>
             <a
               href={project.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-orange-600 hover:underline"
+              className="edition-link"
             >
-              <ExternalLink size={12} />
-              Source
+              Inspect the repository <ArrowUpRight size={18} />
             </a>
           </div>
-        </div>
-
-        <p className="font-mono text-sm text-gray-700 leading-relaxed">
-          {project.description}
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 border border-black bg-gray-50">
-          <div className="p-4 sm:p-5 md:border-r border-b md:border-b-0 border-black">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-red-700 mb-2">Problem</p>
-            <p className="font-sans text-sm leading-relaxed text-gray-800">{project.problem}</p>
-          </div>
-          <div className="p-4 sm:p-5">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-blue-700 mb-2">Decision</p>
-            <p className="font-sans text-sm leading-relaxed text-gray-800">{project.decision}</p>
-          </div>
-        </div>
-
-        <div className="border-l-4 border-orange-600 bg-orange-50 px-4 py-3 font-mono text-xs leading-relaxed">
-          <span className="font-bold text-orange-700">Evidence boundary: </span>
-          {project.proof}
-          <div className="mt-2 text-[10px] text-gray-500">
-            Source map: {project.sourcePath}
-          </div>
-        </div>
-
-        <div>
-          <h3 className="font-mono text-[10px] font-bold uppercase tracking-widest text-gray-500 mb-3">
-            Design surface
-          </h3>
-          <ul className="list-disc list-inside font-mono text-sm space-y-2 marker:text-orange-600">
-          {project.highlights.map((h, i) => (
-            <li key={i}>{h}</li>
-          ))}
-          </ul>
-        </div>
-
-        {/* Failure notes — integrated from the original Engineering Notes */}
-        {project.failureNotes && project.failureNotes.length > 0 && (
-          <div className="space-y-4 pt-4 border-t border-gray-200">
-            <h3 className="font-mono text-xs font-bold uppercase tracking-widest text-gray-500">
-              Engineering Notes
-            </h3>
-            {project.failureNotes.map((note, i) => (
-              <FailureNoteCard key={i} note={note} />
+        </section>
+        {related.length > 0 && (
+          <section className="dossier-related" data-reveal>
+            <p className="eyebrow">KEEP READING / FIELD JOURNAL</p>
+            {related.map((note) => (
+              <a href={siteUrl(`notes/#${note.id}`)} key={note.id}>
+                <span>{note.category}</span>
+                <h3>{note.title}</h3>
+                <ArrowUpRight size={25} />
+              </a>
             ))}
-          </div>
+          </section>
         )}
+        <section className="dossier-activity">
+          <button
+            aria-expanded={activityOpen}
+            aria-controls="repository-activity"
+            onClick={() => setActivityOpen((value) => !value)}
+          >
+            <span>
+              From the repository<small>Recent commit activity · GitHub</small>
+            </span>
+            {activityOpen ? <Minus size={20} /> : <Plus size={20} />}
+          </button>
+          <div id="repository-activity" hidden={!activityOpen}>
+            {activityOpen && <KernelLog activeSection={project.id} />}
+          </div>
+        </section>
       </div>
+      <button className="next-dossier" onClick={() => onSelect(next.id)}>
+        <div>
+          <span className="eyebrow">
+            NEXT IN THE COLLECTION /{" "}
+            {String(((index + 1) % projects.length) + 1).padStart(2, "0")}
+          </span>
+          <strong>{next.name}</strong>
+          <span>{next.focus}</span>
+        </div>
+        <Artwork name={projectPresentation[next.id].art} sizes="220px" />
+        <ArrowRight size={38} strokeWidth={1.2} />
+      </button>
     </article>
   );
 }

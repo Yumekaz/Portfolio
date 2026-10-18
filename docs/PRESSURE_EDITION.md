@@ -1,5 +1,8 @@
 # Order under pressure
 
+This records the homepage edition. The subsequent end-to-end interior redesign
+is documented in [FULL_PORTFOLIO.md](FULL_PORTFOLIO.md).
+
 ## What changed
 
 The homepage is a dramatic, image-led introduction to systems engineering:

@@ -4,14 +4,10 @@ import HeroSection from "./components/HeroSection";
 import FailureLab from "./components/FailureLab";
 import { initialLab, labReducer } from "./lib/failureLab";
 import HomeHighlights from "./components/HomeHighlights";
-import Sidebar from "./components/Sidebar";
-import CaseStudyViewer from "./components/CaseStudyViewer";
 import EngineeringNotes from "./components/EngineeringNotes";
 import OtherWork from "./components/OtherWork";
-import KernelLog from "./components/KernelLog";
 import Footer from "./components/Footer";
-import RouteHeader from "./components/RouteHeader";
-import ProjectDiagram from "./components/ProjectDiagram";
+import ProjectsPage from "./components/ProjectsPage";
 import projects from "./data/projects";
 import { siteUrl } from "./lib/paths";
 import { useMotionPreference } from "./hooks/useMotionPreference";
@@ -59,45 +55,6 @@ function HomePage({ reducedMotion }: { reducedMotion: boolean }) {
       />
       <FailureLab state={state} dispatch={dispatch} />
       <HomeHighlights />
-      <Footer />
-    </>
-  );
-}
-
-function ProjectsPage({
-  activeSection,
-  onSelect,
-  reducedMotion,
-}: {
-  activeSection: string;
-  onSelect: (id: string) => void;
-  reducedMotion: boolean;
-}) {
-  return (
-    <>
-      <div data-reveal>
-        <RouteHeader
-          eyebrow="PROJECT DOSSIERS / DISTRIBUTED BACKEND SYSTEMS"
-          title="Built. Broken. Understood."
-          description="Full case studies covering the problem, design decision, evidence boundary, and trade-offs behind the systems work. Start with the three flagship dossiers, then inspect the correctness and runtime projects supporting the lane."
-        />
-      </div>
-      <div className="diagram-panel">
-        <ProjectDiagram
-          activeSection={activeSection}
-          reducedMotion={reducedMotion}
-        />
-      </div>
-      <div
-        id="project-directory"
-        className="project-directory grid grid-cols-1 lg:grid-cols-12"
-      >
-        <Sidebar activeSection={activeSection} onSelect={onSelect} />
-        <CaseStudyViewer activeSection={activeSection} />
-      </div>
-      <div className="lg:hidden border-t border-black">
-        <KernelLog activeSection={activeSection} />
-      </div>
       <Footer />
     </>
   );
@@ -155,7 +112,7 @@ function App() {
     });
 
     return () => observer.disconnect();
-  }, [route]);
+  }, [route, activeSection]);
 
   useEffect(() => {
     const onHashChange = () => {
@@ -192,7 +149,16 @@ function App() {
 
   const selectProject = (id: string) => {
     setActiveSection(id);
-    window.history.replaceState(null, "", siteUrl(`projects/#${id}`));
+    if (window.location.hash !== `#${id}`) {
+      window.history.pushState(null, "", siteUrl(`projects/#${id}`));
+    }
+    if (id === activeSection)
+      document
+        .getElementById(id)
+        ?.scrollIntoView({
+          behavior: reduced ? "auto" : "smooth",
+          block: "start",
+        });
   };
 
   let page;

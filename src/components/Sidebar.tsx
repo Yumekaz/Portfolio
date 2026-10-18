@@ -1,49 +1,62 @@
-import { ChevronRight } from 'lucide-react';
-import projects from '../data/projects';
-import type { ProjectStatus } from '../data/projects';
-import KernelLog from './KernelLog';
+import { ArrowUpRight } from "lucide-react";
+import projects from "../data/projects";
+import { siteUrl } from "../lib/paths";
 
-interface SidebarProps {
+export default function Sidebar({
+  activeSection,
+  onSelect,
+}: {
   activeSection: string;
   onSelect: (id: string) => void;
-}
-
-const statusDot: Record<ProjectStatus, string> = {
-  Active:    'bg-green-500',
-  Shipped:   'bg-blue-500',
-  Hackathon: 'bg-purple-500',
-};
-
-export default function Sidebar({ activeSection, onSelect }: SidebarProps) {
+}) {
   return (
-    <aside className="project-sidebar lg:col-span-3">
-      <div className="p-4 border-b border-black font-mono text-xs font-bold bg-white">
-        PROJECT INDEX / 08
-      </div>
-
-      <nav className="project-index" aria-label="Select a case study">
-        {projects.map((project) => (
-          <button
-            key={project.id}
-            onClick={() => onSelect(project.id)}
-            aria-pressed={activeSection === project.id}
-            className={`p-4 text-left font-mono text-sm border-b border-gray-200 hover:bg-orange-50 transition-colors flex justify-between items-center focus-visible:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-orange-600 ${
-              activeSection === project.id
-                ? 'bg-orange-50 font-bold text-black border-l-4 border-l-orange-600'
-                : 'text-gray-500'
-            }`}
+    <aside className="collection-sidebar">
+      <div className="collection-sidebar-inner">
+        <p className="eyebrow">
+          THE COLLECTION <span>08</span>
+        </p>
+        <nav className="dossier-index" aria-label="Select a case study">
+          {projects.map((project, index) => (
+            <a
+              key={project.id}
+              href={siteUrl(`projects/#${project.id}`)}
+              onClick={(event) => {
+                event.preventDefault();
+                onSelect(project.id);
+              }}
+              aria-current={activeSection === project.id ? "true" : undefined}
+            >
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <span>
+                {project.name}
+                <small>{project.focus}</small>
+              </span>
+              <ArrowUpRight size={14} />
+            </a>
+          ))}
+        </nav>
+        <label className="mobile-case-picker">
+          Choose a case study
+          <select
+            value={activeSection}
+            onChange={(event) => onSelect(event.target.value)}
           >
-            <span className="flex items-center gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${statusDot[project.status]}`} />
-              {project.name}
-            </span>
-            {activeSection === project.id && <ChevronRight size={14} />}
-          </button>
-        ))}
-      </nav>
-
-      <div className="hidden lg:block border-t border-gray-200">
-        <KernelLog activeSection={activeSection} />
+            {projects.map((project, i) => (
+              <option key={project.id} value={project.id}>
+                {String(i + 1).padStart(2, "0")} / {project.name}
+              </option>
+            ))}
+          </select>
+        </label>
+        <div className="index-footnote">
+          <span className="index-rule" />
+          Claims have boundaries.
+          <br />
+          Every dossier keeps them visible.
+        </div>
+        <a href={siteUrl("notes/")} className="index-journal-link">
+          Read the field journal <ArrowUpRight size={15} />
+        </a>
       </div>
     </aside>
   );

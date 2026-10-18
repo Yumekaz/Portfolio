@@ -29,8 +29,20 @@ work. They support the main story; they do not compete with it for the headline.
 5. Field journal leading to full engineering notes.
 6. Large contact section with email, GitHub, LinkedIn, and resume.
 
-Separate routes preserve the eight complete case studies, source evidence,
-engineering notes, and broader project shelf.
+The visual system continues across three distinct interior experiences:
+
+- Projects: a dark collection masthead and fanned artworks lead to eight
+  illustrated dossiers. A numbered index, chapter links, architecture controls,
+  evidence sections, related notes, and next-project navigation support reading.
+- Notes: a warm journal masthead with three paper layers leads to seven
+  searchable, filterable issues. Expanded notes retain failure, decision,
+  boundary, and the original source link.
+- Explorations: a dark green workshop masthead leads to nine original SVG
+  studies. Category filters and gallery/index views expose the same content.
+
+All eight cases have distinct sculptural imagery. Desktop navigation becomes
+a labelled case selector on small screens. Diagrams can be enlarged and panned
+inside their own viewport without creating horizontal page overflow.
 
 ## Case-study contract
 
@@ -76,5 +88,6 @@ and TinyTantrum.
 ## Verification
 
 The current edition's completed checks and their scope are recorded in
+[docs/FULL_PORTFOLIO.md](docs/FULL_PORTFOLIO.md), with homepage checks in
 [docs/PRESSURE_EDITION.md](docs/PRESSURE_EDITION.md). Earlier visual review
 notes are historical; the current implementation takes precedence.
