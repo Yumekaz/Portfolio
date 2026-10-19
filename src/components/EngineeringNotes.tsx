@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import engineeringNotes from "../data/engineeringNotes";
 import Artwork from "./Artwork";
+import JournalIndex from "./JournalIndex";
 import NoteLens, { noteHeadings } from "./NoteLens";
 import { siteUrl } from "../lib/paths";
 
@@ -37,6 +38,7 @@ export default function EngineeringNotes() {
     hashNote() ?? engineeringNotes[0].id,
   ]);
   useEffect(() => {
+    let frame = 0;
     const openHash = () => {
       const id = hashNote();
       if (id) {
@@ -45,15 +47,19 @@ export default function EngineeringNotes() {
         setOpenNotes((current) =>
           current.includes(id) ? current : [...current, id],
         );
-        requestAnimationFrame(() =>
-          document
-            .getElementById(id)
-            ?.scrollIntoView({ behavior: "auto", block: "start" }),
-        );
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          const target = document.getElementById(id);
+          target?.scrollIntoView({ behavior: "instant", block: "start" });
+          target?.focus({ preventScroll: true });
+        });
       }
     };
     window.addEventListener("hashchange", openHash);
-    return () => window.removeEventListener("hashchange", openHash);
+    return () => {
+      window.removeEventListener("hashchange", openHash);
+      cancelAnimationFrame(frame);
+    };
   }, []);
   const matches = (note: (typeof engineeringNotes)[number]) =>
     (category === "All notes" || note.category === category) &&
@@ -105,36 +111,12 @@ export default function EngineeringNotes() {
               Read the journal <ArrowDown size={18} />
             </a>
           </div>
-          <div className="journal-paper-stack" aria-hidden="true">
-            <div className="journal-paper paper-back">
-              <span>01 / FAILURE</span>
-              <strong>
-                Something
-                <br />
-                didn’t hold.
-              </strong>
-              <i>F</i>
-            </div>
-            <div className="journal-paper paper-middle">
-              <span>02 / DECISION</span>
-              <strong>
-                Find the
-                <br />
-                boundary.
-              </strong>
-              <i>D</i>
-            </div>
-            <div className="journal-paper paper-front">
-              <span>03 / EVIDENCE</span>
-              <strong>
-                Keep the
-                <br />
-                receipt.
-              </strong>
-              <i>↳</i>
-              <small>BUILD · BREAK · UNDERSTAND</small>
-            </div>
-          </div>
+          <JournalIndex
+            onSelect={(id) => {
+              if (window.location.hash !== `#${id}`) window.location.hash = id;
+              else window.dispatchEvent(new HashChangeEvent("hashchange"));
+            }}
+          />
         </div>
         <div className="journal-masthead-foot">
           <span>ENGINEERING IN THE OPEN</span>
@@ -206,7 +188,9 @@ export default function EngineeringNotes() {
               <article
                 id={note.id}
                 key={note.id}
+                tabIndex={-1}
                 className={`journal-issue ${open ? "issue-open" : ""}`}
+                data-scene
                 hidden={!matches(note)}
               >
                 <div className="issue-heading">

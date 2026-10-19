@@ -5,6 +5,7 @@ import {
   Linkedin,
   FileDown,
 } from "lucide-react";
+import TraceField from "./TraceField";
 import { siteUrl } from "../lib/paths";
 export default function Footer() {
   return (
@@ -55,6 +56,14 @@ export default function Footer() {
             Résumé
           </a>
         </div>
+      </div>
+      <div className="footer-signature" data-scene aria-hidden="true">
+        <TraceField variant="fold" />
+        <span>MIHIR</span>
+        <span>
+          SWARNKAR<span className="signature-period">.</span>
+        </span>
+        <small>BUILD / BREAK / UNDERSTAND</small>
       </div>
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} Mihir Swarnkar</span>

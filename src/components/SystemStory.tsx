@@ -347,77 +347,124 @@ export default function SystemStory({
   const story = systemStories[project];
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
+  const [scrollMode, setScrollMode] = useState(
+    () =>
+      window.matchMedia("(min-width: 1200px) and (min-height: 800px)")
+        .matches && !reducedMotion,
+  );
   const host = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   useEffect(() => {
-    const element = host.current;
-    if (!element) return;
+    if (!host.current) return;
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { threshold: 0.25 },
+      { threshold: 0.1 },
     );
-    observer.observe(element);
+    observer.observe(host.current);
     return () => observer.disconnect();
   }, []);
   useEffect(() => {
-    if (reducedMotion) setPlaying(false);
+    if (reducedMotion) {
+      setPlaying(false);
+      setScrollMode(false);
+    }
+    const media = window.matchMedia(
+      "(min-width: 1200px) and (min-height: 800px)",
+    );
+    const update = () => {
+      if (!media.matches) setScrollMode(false);
+    };
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
   }, [reducedMotion]);
   useEffect(() => {
-    if (!playing || !inView || reducedMotion) return;
+    if (!scrollMode || !inView || reducedMotion) return;
+    let frame = 0;
+    const update = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        const sections =
+          host.current?.querySelectorAll<HTMLElement>(".scroll-story-step");
+        if (!sections?.length) return;
+        let nearest = 0,
+          distance = Infinity;
+        sections.forEach((section, i) => {
+          const box = section.getBoundingClientRect();
+          const d = Math.abs(
+            box.top + box.height / 2 - window.innerHeight * 0.5,
+          );
+          if (d < distance) {
+            nearest = i;
+            distance = d;
+          }
+        });
+        setStep(nearest);
+      });
+    };
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    update();
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [scrollMode, inView, reducedMotion]);
+  useEffect(() => {
+    if (!playing || !inView || reducedMotion || scrollMode) return;
     const timer = window.setTimeout(() => {
-      if (document.hidden) {
-        setPlaying(false);
-        return;
-      }
-      if (step === story.steps.length - 1) setPlaying(false);
+      if (document.hidden || step === story.steps.length - 1) setPlaying(false);
       else setStep((value) => value + 1);
     }, 6500);
     return () => clearTimeout(timer);
-  }, [playing, inView, step, story.steps.length, reducedMotion]);
+  }, [playing, inView, step, story.steps.length, reducedMotion, scrollMode]);
   const select = (value: number) => {
-    setStep(value);
+    setPlaying(false);
+    if (scrollMode) {
+      document
+        .getElementById(`story-${project}-${value}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+    } else setStep(value);
+  };
+  const changeMode = (scroll: boolean) => {
+    setScrollMode(scroll);
     setPlaying(false);
   };
-  return (
-    <div
-      className="system-story"
-      ref={host}
-      data-visible={inView}
-      data-playing={playing && inView && !reducedMotion}
-    >
-      <div className="story-introduction">
-        <p className="eyebrow">02 / FOLLOW THE MECHANISM</p>
-        <h3>{story.title}</h3>
-        <p>{story.deck}</p>
+  const instrument = (
+    <div className="story-instrument">
+      <div className="instrument-topline">
+        <span>
+          <i /> EXPLANATORY MODEL
+        </span>
+        <span>
+          STEP {step + 1} / {story.steps.length}
+        </span>
       </div>
-      <div className="story-instrument">
-        <div className="instrument-topline">
-          <span>
-            <i /> EXPLANATORY MODEL
-          </span>
-          <span>
-            STEP {step + 1} / {story.steps.length}
-          </span>
-        </div>
-        <div
-          className="story-theatre"
-          role="img"
-          aria-label={`${story.steps[step].title} ${story.steps[step].signal}`}
+      <div
+        className="story-theatre"
+        role="img"
+        aria-label={`${story.steps[step].title} ${story.steps[step].signal}`}
+      >
+        <StoryVisual project={project} step={step} />
+      </div>
+      <div className="story-signal" key={`signal-${step}`}>
+        <span>↳</span>
+        {story.steps[step].signal}
+      </div>
+      <div className="story-transport">
+        <button
+          aria-label="Previous step"
+          disabled={step === 0}
+          onClick={() => select(step - 1)}
         >
-          <StoryVisual project={project} step={step} />
-        </div>
-        <div className="story-signal" key={`signal-${step}`}>
-          <span>↳</span>
-          {story.steps[step].signal}
-        </div>
-        <div className="story-transport">
-          <button
-            aria-label="Previous step"
-            disabled={step === 0}
-            onClick={() => select(step - 1)}
-          >
-            <ArrowLeft size={18} />
-          </button>
+          <ArrowLeft size={18} />
+        </button>
+        {scrollMode ? (
+          <span className="story-scroll-hint">
+            Scroll to unfold <span>↓</span>
+          </span>
+        ) : (
           <button
             className="story-play"
             disabled={reducedMotion}
@@ -433,42 +480,118 @@ export default function SystemStory({
                 ? "Pause sequence"
                 : "Play sequence"}
           </button>
-          <button aria-label="Restart sequence" onClick={() => select(0)}>
-            <RotateCcw size={16} />
-          </button>
-          <button
-            aria-label="Next step"
-            disabled={step === story.steps.length - 1}
-            onClick={() => select(step + 1)}
-          >
-            <ArrowRight size={18} />
-          </button>
+        )}
+        <button aria-label="Restart sequence" onClick={() => select(0)}>
+          <RotateCcw size={16} />
+        </button>
+        <button
+          aria-label="Next step"
+          disabled={step === story.steps.length - 1}
+          onClick={() => select(step + 1)}
+        >
+          <ArrowRight size={18} />
+        </button>
+      </div>
+      {scrollMode && (
+        <div
+          className="story-scroll-position"
+          aria-label={`Explanation step ${step + 1} of 4`}
+        >
+          {story.steps.map((item, i) => (
+            <button
+              key={item.label}
+              aria-label={`Go to ${item.label}`}
+              aria-pressed={i === step}
+              onClick={() => select(i)}
+            >
+              0{i + 1}
+            </button>
+          ))}
         </div>
+      )}
+    </div>
+  );
+  return (
+    <div
+      className={`system-story ${scrollMode ? "story-scroll-mode" : "story-manual-mode"}`}
+      ref={host}
+      data-visible={inView}
+      data-playing={playing && inView && !reducedMotion}
+    >
+      <div className="story-introduction">
+        <p className="eyebrow">02 / FOLLOW THE MECHANISM</p>
+        <h3>{story.title}</h3>
+        <p>{story.deck}</p>
       </div>
       <div
-        className="story-steps"
+        className="story-mode"
         role="group"
-        aria-label="Choose an explanation step"
+        aria-label="Explanation navigation"
       >
-        {story.steps.map((item, i) => (
-          <button
-            key={item.label}
-            aria-pressed={step === i}
-            onClick={() => select(i)}
-          >
-            <span>0{i + 1}</span>
-            {item.label}
-            <i />
-          </button>
-        ))}
+        <button
+          aria-pressed={scrollMode}
+          disabled={reducedMotion}
+          onClick={() => changeMode(true)}
+        >
+          Follow scroll <span>↳</span>
+        </button>
+        <button aria-pressed={!scrollMode} onClick={() => changeMode(false)}>
+          Step by step <span>→</span>
+        </button>
       </div>
-      <div className="story-explanation" aria-live="polite" aria-atomic="true">
-        <span className="story-step-number">0{step + 1}</span>
-        <div key={step}>
-          <h4>{story.steps[step].title}</h4>
-          <p>{story.steps[step].body}</p>
+      {scrollMode ? (
+        <div className="scroll-story-layout">
+          <div className="scroll-story-stage">{instrument}</div>
+          <div className="scroll-story-narrative">
+            {story.steps.map((item, i) => (
+              <section
+                key={item.label}
+                id={`story-${project}-${i}`}
+                className="scroll-story-step"
+                data-active={i === step}
+              >
+                <span className="scroll-step-index">0{i + 1}</span>
+                <span className="eyebrow">{item.label}</span>
+                <h4>{item.title}</h4>
+                <p>{item.body}</p>
+                <span className="scroll-step-signal">{item.signal}</span>
+              </section>
+            ))}
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          {instrument}
+          <div
+            className="story-steps"
+            role="group"
+            aria-label="Choose an explanation step"
+          >
+            {story.steps.map((item, i) => (
+              <button
+                key={item.label}
+                aria-pressed={step === i}
+                onClick={() => select(i)}
+              >
+                <span>0{i + 1}</span>
+                {item.label}
+                <i />
+              </button>
+            ))}
+          </div>
+          <div
+            className="story-explanation"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            <span className="story-step-number">0{step + 1}</span>
+            <div key={step}>
+              <h4>{story.steps[step].title}</h4>
+              <p>{story.steps[step].body}</p>
+            </div>
+          </div>
+        </>
+      )}
       <div className="story-takeaway">
         <span>THE LESSON</span>
         <p>{story.takeaway}</p>

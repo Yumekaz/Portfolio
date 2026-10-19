@@ -1,7 +1,6 @@
 import { ArrowDown, ArrowUpLeft, ArrowUpRight } from "lucide-react";
-import Sidebar from "./Sidebar";
 import CaseStudyViewer from "./CaseStudyViewer";
-import Artwork from "./Artwork";
+import ProjectAtlas from "./ProjectAtlas";
 import Footer from "./Footer";
 import { siteUrl } from "../lib/paths";
 
@@ -28,9 +27,9 @@ export default function ProjectsPage({
           <div>
             <p className="eyebrow">A COLLECTION OF SYSTEMS & THEIR LIMITS</p>
             <h1 id="collection-title">
-              Built to be
+              Every system.
               <br />
-              <em>questioned.</em>
+              <em>A breaking point.</em>
             </h1>
             <p>
               Eight systems. Different constraints.
@@ -41,21 +40,8 @@ export default function ProjectsPage({
               Open the collection <ArrowDown size={18} />
             </a>
           </div>
-          <div className="collection-fan" aria-hidden="true">
-            <div className="fan-card fan-one">
-              <Artwork name="storage" eager />
-              <span>02 / CONSISTENCY</span>
-            </div>
-            <div className="fan-card fan-two">
-              <Artwork name="failforge" eager />
-              <span>03 / FAILURE</span>
-            </div>
-            <div className="fan-card fan-three">
-              <Artwork name="coordination" eager />
-              <span>01 / COORDINATION</span>
-            </div>
-          </div>
         </div>
+        <ProjectAtlas onSelect={onSelect} />
         <div className="collection-foot">
           <span>DISTRIBUTED SYSTEMS → RUNTIMES → REPRODUCIBILITY</span>
           <span>
@@ -68,7 +54,6 @@ export default function ProjectsPage({
         className="dossier-layout"
         aria-label="Project collection"
       >
-        <Sidebar activeSection={activeSection} onSelect={onSelect} />
         <CaseStudyViewer
           key={activeSection}
           activeSection={activeSection}

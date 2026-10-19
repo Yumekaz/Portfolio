@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ArrowRight, ArrowUpRight, Minus, Plus } from "lucide-react";
 import { Exhibit } from "../data/exhibits";
 import { Exploration } from "../data/explorations";
@@ -209,6 +209,13 @@ export default function ExplorationExhibit({
   const [open, setOpen] = useState(
     () => window.location.hash === `#${exhibit.id}`,
   );
+  useEffect(() => {
+    const reveal = () => {
+      if (window.location.hash === `#${exhibit.id}`) setOpen(true);
+    };
+    window.addEventListener("hashchange", reveal);
+    return () => window.removeEventListener("hashchange", reveal);
+  }, [exhibit.id]);
   return (
     <>
       <div

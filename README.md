@@ -28,25 +28,32 @@ Skein, AeroVoxel, BitNet Triton, and AUTOFORGE. Each has an interactive mechanis
 explanation, a field record, and repository links. Orbits, AeroVoxel, and BitNet
 also show original repository artifacts with source attribution.
 
-## Complete portfolio edition
+## Engineering atlas edition
 
 The visual direction extends across every route:
 
-- **Eight case studies:** individual sculptural covers, chapter navigation,
-  four-step interactive system explanations, decisions, failure records
+- **Eight case studies:** a browsable project atlas, full-width individual
+  covers and SVG insignia, chapter navigation, scroll-driven or manual
+  four-step system explanations, decisions, failure records
   where available, evidence, related notes, and next-project navigation.
-- **Seven field notes:** a searchable, filterable journal with expandable
+- **Seven field notes:** an annotated notebook index and searchable, filterable
+  journal with expandable
   arguments, keyboard-operable failure/repair comparisons, persistent deep links,
   and the original source evidence.
-- **Nine explorations:** six bespoke mechanism illustrations, three actual
+- **Nine explorations:** a navigable project map, varied editorial spreads,
+  six bespoke mechanism illustrations, three actual
   repository artifacts, interactive stages, expandable field records,
   category filters, and gallery/index views.
 
 Responsive layouts, keyboard controls, and the shared animation pause setting
-apply throughout. Case-study sequences play only when requested and visible;
-all have manual step controls. A continuous homepage artwork replaces the old
-image-slice effect. See [the complete implementation and verification record](docs/FULL_PORTFOLIO.md)
-and [the mechanism edition source record](docs/MECHANISM_EDITION.md).
+apply throughout. Case studies follow the narrative on larger screens and have
+manual controls at every size. Timed playback is opt-in. Procedural trace studies
+connect the homepage and shared footer to the atlas identity.
+
+See [the current atlas edition and verification limits](docs/ATLAS_EDITION.md),
+[the complete implementation record](docs/FULL_PORTFOLIO.md), and
+[the mechanism edition source record](docs/MECHANISM_EDITION.md). Fresh browser
+review of the atlas layouts is outstanding; successful builds are not visual QA.
 
 ## Development
 
@@ -63,34 +70,18 @@ npm run build
 
 ## Structure
 
-```text
-src/
-├── App.tsx                         # Page composition and active case study
-├── index.css                       # Shared layout and reading styles
-├── signature.css                   # Quorum experiment structure
-├── pressure.css                    # Current art direction and responsive styles
-├── interior.css                    # Case studies, field journal, explorations
-├── craft.css                       # Interactive mechanisms and evidence exhibits
-├── lib/failureLab.ts               # Deterministic quorum model
-├── data/
-│   ├── projects.ts                 # Flagship project summaries and evidence maps
-│   ├── engineeringNotes.ts         # Failure → decision → boundary notes
-│   ├── projectPresentation.ts      # Case artwork and editorial presentation
-│   └── explorations.ts             # Broader project collection
-└── components/
-    ├── HeroSection.tsx             # Order under pressure introduction
-    ├── PressureScene.tsx           # Layered artwork driven by replica state
-    ├── FailureLab.tsx              # Interactive failure/recovery experiment
-    ├── Sidebar.tsx                 # Case-study navigation
-    ├── CaseStudyViewer.tsx         # Project proof and limits
-    ├── EngineeringNotes.tsx        # Searchable journal and expanded reading
-    ├── OtherWork.tsx               # Filterable exploration gallery/index
-    ├── ExplorationArt.tsx          # Nine code-native visual studies
-    ├── Artwork.tsx                 # Responsive sculptural images
-    ├── ProjectDiagram.tsx          # Lightweight per-project diagrams
-    ├── KernelLog.tsx               # Optional recent GitHub commit context
-    └── Footer.tsx                  # Contact, LinkedIn, GitHub, resume
-```
+| Area                      | Main files                                                             |
+| ------------------------- | ---------------------------------------------------------------------- |
+| Routing and shared motion | `App.tsx`, `hooks/useMotionPreference.ts`, `hooks/useChoreography.ts`  |
+| Visual system             | `pressure.css`, `interior.css`, `craft.css`, `atlas.css`               |
+| Project atlas and covers  | `ProjectAtlas.tsx`, `CaseCover.tsx`, `SystemInsignia.tsx`              |
+| Mechanisms and evidence   | `SystemStory.tsx`, `CaseStudyViewer.tsx`, `data/systemStories.ts`      |
+| Notes                     | `EngineeringNotes.tsx`, `JournalIndex.tsx`, `NoteLens.tsx`             |
+| Explorations              | `OtherWork.tsx`, `WorkshopConstellation.tsx`, `ExplorationExhibit.tsx` |
+| Procedural artwork        | `TraceField.tsx`, `TraceInterlude.tsx`                                 |
+| Shared experiment         | `HeroSection.tsx`, `FailureLab.tsx`, `lib/failureLab.ts`               |
+
+Paths above are relative to `src/`; component files live in `src/components/`.
 
 ## Design rule
 

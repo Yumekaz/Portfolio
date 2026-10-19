@@ -12,6 +12,7 @@ import projects from "./data/projects";
 import { siteUrl } from "./lib/paths";
 import { useMotionPreference } from "./hooks/useMotionPreference";
 import ReadingProgress from "./components/ReadingProgress";
+import { useChoreography } from "./hooks/useChoreography";
 
 type SiteRoute = "home" | "projects" | "notes" | "other-work";
 
@@ -83,6 +84,7 @@ function App() {
   const [route] = useState(currentRoute);
   const { reduced, systemReduced, toggleMotion } = useMotionPreference();
   const [activeSection, setActiveSection] = useState(projectFromHash);
+  useChoreography(`${route}:${activeSection}`, reduced);
   const lastScrolledProject = useRef<string | null>(null);
 
   useEffect(() => {
@@ -133,6 +135,7 @@ function App() {
 
     const timer = window.setTimeout(() => {
       lastScrolledProject.current = activeSection;
+      document.getElementById("dossier-title")?.focus({ preventScroll: true });
       document.getElementById(activeSection)?.scrollIntoView({
         behavior: reduced ? "auto" : "smooth",
         block: "start",
@@ -153,11 +156,13 @@ function App() {
     if (window.location.hash !== `#${id}`) {
       window.history.pushState(null, "", siteUrl(`projects/#${id}`));
     }
-    if (id === activeSection)
+    if (id === activeSection) {
+      document.getElementById("dossier-title")?.focus({ preventScroll: true });
       document.getElementById(id)?.scrollIntoView({
         behavior: reduced ? "auto" : "smooth",
         block: "start",
       });
+    }
   };
 
   let page;

@@ -1,4 +1,5 @@
 import { ArrowRight, ArrowUpRight } from "lucide-react";
+import TraceInterlude from "./TraceInterlude";
 import projects from "../data/projects";
 import engineeringNotes from "../data/engineeringNotes";
 import { siteUrl } from "../lib/paths";
@@ -56,6 +57,7 @@ export default function HomeHighlights() {
           <article
             key={story.image}
             className={`gallery-project gallery-project-${index + 1}`}
+            data-scene
             data-reveal
           >
             <a
@@ -113,6 +115,7 @@ export default function HomeHighlights() {
           </a>
         </div>
       </section>
+      <TraceInterlude />
       <section className="manifesto" aria-labelledby="manifesto-title">
         <div className="manifesto-top">
           <p className="eyebrow">03 / AN ENGINEERING INSTINCT</p>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowDown,
   ArrowUpLeft,
@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import { explorations } from "../data/explorations";
 import { siteUrl } from "../lib/paths";
-import ExplorationArt from "./ExplorationArt";
+import WorkshopConstellation from "./WorkshopConstellation";
 import ExplorationExhibit from "./ExplorationExhibit";
 import { exhibits } from "../data/exhibits";
 
@@ -22,6 +22,25 @@ const categories = [
 export default function OtherWork() {
   const [category, setCategory] = useState("Everything");
   const [view, setView] = useState<"gallery" | "index">("gallery");
+  useEffect(() => {
+    let frame = 0;
+    const revealRecord = () => {
+      const id = window.location.hash.slice(1);
+      if (!exhibits.some((item) => item.id === id)) return;
+      setCategory("Everything");
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const target = document.getElementById(id);
+        target?.scrollIntoView({ behavior: "instant", block: "start" });
+        target?.focus({ preventScroll: true });
+      });
+    };
+    window.addEventListener("hashchange", revealRecord);
+    return () => {
+      window.removeEventListener("hashchange", revealRecord);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
   const count = explorations.filter(
     (item) => category === "Everything" || item.category === category,
   ).length;
@@ -43,9 +62,6 @@ export default function OtherWork() {
             <em>the lines.</em>
             <span aria-hidden="true">↗</span>
           </h1>
-          <div className="workshop-hero-art">
-            <ExplorationArt index={1} />
-          </div>
           <div className="workshop-intro-foot">
             <p>
               Tools, runtimes, communication, and experiments.
@@ -56,6 +72,12 @@ export default function OtherWork() {
             </a>
           </div>
         </div>
+        <WorkshopConstellation
+          onSelect={(id) => {
+            if (window.location.hash !== `#${id}`) window.location.hash = id;
+            else window.dispatchEvent(new HashChangeEvent("hashchange"));
+          }}
+        />
       </header>
       <div id="workshop-collection" className="workshop-collection">
         <div className="workshop-toolbar">
@@ -106,7 +128,9 @@ export default function OtherWork() {
             <article
               key={item.name}
               id={exhibits[index].id}
+              tabIndex={-1}
               className={`exploration-item exploration-${index}`}
+              data-scene
               hidden={category !== "Everything" && item.category !== category}
             >
               <ExplorationExhibit

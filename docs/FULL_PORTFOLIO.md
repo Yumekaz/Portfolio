@@ -1,5 +1,11 @@
 # Complete portfolio edition
 
+The current visual pass is documented in [ATLAS_EDITION.md](ATLAS_EDITION.md).
+It adds the project atlas, full-width covers, scroll narratives, notebook index,
+workshop map, and shared author signature. Its browser QA remains outstanding.
+The implementation and browser checks below describe the preceding mechanism
+edition and are retained as a historical verification record.
+
 The visual direction extends across every existing route and entry. This is a
 presentation and interaction update; repository test counts and historical
 benchmarks are attributed records, not experiments rerun by the portfolio.
@@ -28,7 +34,7 @@ benchmarks are attributed records, not experiments rerun by the portfolio.
   removed. New diagram classes are isolated from the homepage quorum network.
 - Repository activity remains opt-in and cached; no analytics were added.
 
-## Verification — October 18–19, 2026
+## Prior mechanism-edition verification — October 18–19, 2026
 
 - TypeScript and Vite production builds for `/` and `/Portfolio/`.
 - Static route, asset-path, and resume checks for both bases.
