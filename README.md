@@ -24,23 +24,29 @@ visible beside the result.
 - **ML infrastructure:** TinyTantrum
 
 The explorations gallery includes DuraFlow, Orbits, WasmForge, MAJA, SILSILA,
-Skein, AeroVoxel, BitNet Triton, and AUTOFORGE. Each has its own visual study,
-description, category, and repository link.
+Skein, AeroVoxel, BitNet Triton, and AUTOFORGE. Each has an interactive mechanism
+explanation, a field record, and repository links. Orbits, AeroVoxel, and BitNet
+also show original repository artifacts with source attribution.
 
 ## Complete portfolio edition
 
 The visual direction extends across every route:
 
 - **Eight case studies:** individual sculptural covers, chapter navigation,
-  architecture diagrams with an enlarge control, decisions, failure records
+  four-step interactive system explanations, decisions, failure records
   where available, evidence, related notes, and next-project navigation.
 - **Seven field notes:** a searchable, filterable journal with expandable
-  arguments, persistent deep links, and the original source evidence.
-- **Nine explorations:** unique SVG studies, category filters, and gallery/index
-  views with the full original descriptions and repository links.
+  arguments, keyboard-operable failure/repair comparisons, persistent deep links,
+  and the original source evidence.
+- **Nine explorations:** six bespoke mechanism illustrations, three actual
+  repository artifacts, interactive stages, expandable field records,
+  category filters, and gallery/index views.
 
 Responsive layouts, keyboard controls, and the shared animation pause setting
-apply throughout. See [the complete implementation and verification record](docs/FULL_PORTFOLIO.md).
+apply throughout. Case-study sequences play only when requested and visible;
+all have manual step controls. A continuous homepage artwork replaces the old
+image-slice effect. See [the complete implementation and verification record](docs/FULL_PORTFOLIO.md)
+and [the mechanism edition source record](docs/MECHANISM_EDITION.md).
 
 ## Development
 
@@ -64,6 +70,7 @@ src/
 ├── signature.css                   # Quorum experiment structure
 ├── pressure.css                    # Current art direction and responsive styles
 ├── interior.css                    # Case studies, field journal, explorations
+├── craft.css                       # Interactive mechanisms and evidence exhibits
 ├── lib/failureLab.ts               # Deterministic quorum model
 ├── data/
 │   ├── projects.ts                 # Flagship project summaries and evidence maps

@@ -11,6 +11,7 @@ import ProjectsPage from "./components/ProjectsPage";
 import projects from "./data/projects";
 import { siteUrl } from "./lib/paths";
 import { useMotionPreference } from "./hooks/useMotionPreference";
+import ReadingProgress from "./components/ReadingProgress";
 
 type SiteRoute = "home" | "projects" | "notes" | "other-work";
 
@@ -153,12 +154,10 @@ function App() {
       window.history.pushState(null, "", siteUrl(`projects/#${id}`));
     }
     if (id === activeSection)
-      document
-        .getElementById(id)
-        ?.scrollIntoView({
-          behavior: reduced ? "auto" : "smooth",
-          block: "start",
-        });
+      document.getElementById(id)?.scrollIntoView({
+        behavior: reduced ? "auto" : "smooth",
+        block: "start",
+      });
   };
 
   let page;
@@ -180,6 +179,7 @@ function App() {
 
   return (
     <div className="site-shell" data-route={route}>
+      <ReadingProgress />
       <a
         href="#page-content"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:bg-black focus:px-4 focus:py-3 focus:font-mono focus:text-xs focus:text-white"

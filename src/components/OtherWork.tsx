@@ -9,6 +9,8 @@ import {
 import { explorations } from "../data/explorations";
 import { siteUrl } from "../lib/paths";
 import ExplorationArt from "./ExplorationArt";
+import ExplorationExhibit from "./ExplorationExhibit";
+import { exhibits } from "../data/exhibits";
 
 const categories = [
   "Everything",
@@ -103,45 +105,15 @@ export default function OtherWork() {
           {explorations.map((item, index) => (
             <article
               key={item.name}
+              id={exhibits[index].id}
               className={`exploration-item exploration-${index}`}
               hidden={category !== "Everything" && item.category !== category}
             >
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Explore ${item.name} on GitHub`}
-                className="exploration-art-link"
-              >
-                <div className="exploration-art-panel">
-                  <ExplorationArt index={index} />
-                  <span className="exploration-index">
-                    {String(index + 1).padStart(2, "0")} / 09
-                  </span>
-                  <span className="exploration-material">{item.material}</span>
-                  <span className="exploration-open">
-                    <ArrowUpRight size={27} strokeWidth={1.3} />
-                  </span>
-                </div>
-              </a>
-              <div className="exploration-copy">
-                <p className="eyebrow">{item.category}</p>
-                <h2>
-                  <a href={item.url} target="_blank" rel="noopener noreferrer">
-                    {item.name}
-                    <ArrowUpRight size={24} strokeWidth={1.3} />
-                  </a>
-                </h2>
-                <p>{item.description}</p>
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="exploration-source"
-                >
-                  Open repository <ArrowUpRight size={15} />
-                </a>
-              </div>
+              <ExplorationExhibit
+                item={item}
+                exhibit={exhibits[index]}
+                index={index}
+              />
             </article>
           ))}
         </div>

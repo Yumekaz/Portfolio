@@ -8,6 +8,7 @@ import "./index.css";
 import "./signature.css";
 import "./pressure.css";
 import "./interior.css";
+import "./craft.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

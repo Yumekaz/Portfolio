@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import engineeringNotes from "../data/engineeringNotes";
 import Artwork from "./Artwork";
+import NoteLens, { noteHeadings } from "./NoteLens";
 import { siteUrl } from "../lib/paths";
 
 const noteArtwork = [
@@ -249,15 +250,16 @@ export default function EngineeringNotes() {
                   className="issue-argument"
                   hidden={!open}
                 >
+                  <NoteLens index={index} />
                   <div className="argument-columns">
                     <section>
                       <span>01 / FAILURE</span>
-                      <h3>Where it broke.</h3>
+                      <h3>{noteHeadings(index).failure}</h3>
                       <p>{note.failure}</p>
                     </section>
                     <section>
                       <span>02 / DECISION</span>
-                      <h3>What changed.</h3>
+                      <h3>{noteHeadings(index).decision}</h3>
                       <p>{note.decision}</p>
                     </section>
                   </div>

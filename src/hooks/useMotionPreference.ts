@@ -27,13 +27,6 @@ export function useMotionPreference() {
     } catch {
       /* Storage is optional. */
     }
-    // SMIL is independent of CSS. Pause the existing architectural diagrams too.
-    document
-      .querySelectorAll<SVGSVGElement>(".project-diagram svg")
-      .forEach((svg) => {
-        if (reduced) svg.pauseAnimations?.();
-        else svg.unpauseAnimations?.();
-      });
   }, [reduced, paused]);
 
   return {

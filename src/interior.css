@@ -484,28 +484,6 @@
     monospace;
   color: #5d6852;
 }
-.dossier-architecture .project-diagram {
-  background: transparent;
-  padding: 40px 10px 10px;
-  min-height: 350px;
-}
-.dossier-architecture .project-diagram > div:first-child {
-  font-size: 8px;
-  color: #637155;
-  top: 12px;
-  right: 0;
-}
-.dossier-architecture .project-diagram svg {
-  max-height: 320px;
-}
-.diagram-boundary {
-  font:
-    8px/1.8 "IBM Plex Mono",
-    monospace;
-  color: #596349;
-  border-top: 1px solid #cbd0bf;
-  padding-top: 15px;
-}
 .dossier-design {
   padding: 60px 0 20px;
 }
@@ -2130,16 +2108,6 @@
     display: block;
     margin-top: 8px;
   }
-  .dossier-architecture .project-diagram {
-    padding: 35px 0 10px;
-    min-height: 250px;
-  }
-  .dossier-architecture .project-diagram > div:first-child {
-    font-size: 6px;
-  }
-  .diagram-boundary {
-    font-size: 7px;
-  }
   .dossier-design h3,
   .dossier-evidence h3 {
     font-size: 32px;
@@ -2406,34 +2374,4 @@ html[data-motion="reduced"] .next-dossier img {
   .next-dossier img {
     transition: none;
   }
-}
-.diagram-tools {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 10px;
-}
-.diagram-tools button {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 36px;
-  font:
-    9px "IBM Plex Mono",
-    monospace;
-  color: #526544;
-}
-.diagram-tools button:hover {
-  color: var(--orange);
-}
-.diagram-viewport {
-  overflow-x: auto;
-  max-width: 100%;
-  overscroll-behavior-inline: contain;
-  scrollbar-color: #899978 #d6dec9;
-}
-.diagram-viewport.diagram-large .project-diagram {
-  min-width: 650px;
-}
-.diagram-viewport.diagram-large .project-diagram svg {
-  max-height: 450px;
 }

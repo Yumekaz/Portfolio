@@ -5,7 +5,8 @@ import engineeringNotes from "../data/engineeringNotes";
 import { projectPresentation } from "../data/projectPresentation";
 import { siteUrl } from "../lib/paths";
 import Artwork from "./Artwork";
-import ProjectDiagram from "./ProjectDiagram";
+import SystemStory from "./SystemStory";
+import { systemStories } from "../data/systemStories";
 import KernelLog from "./KernelLog";
 
 interface Props {
@@ -19,11 +20,11 @@ export default function CaseStudyViewer({
   reducedMotion,
 }: Props) {
   const [activityOpen, setActivityOpen] = useState(false);
-  const [diagramLarge, setDiagramLarge] = useState(false);
   const index = projects.findIndex((p) => p.id === activeSection);
   const project = projects[index];
   if (!project) return null;
   const visual = projectPresentation[project.id];
+  const story = systemStories[project.id];
   const number = String(index + 1).padStart(2, "0");
   const next = projects[(index + 1) % projects.length];
   const related = engineeringNotes.filter((note) =>
@@ -77,7 +78,7 @@ export default function CaseStudyViewer({
           01 <span>Overview</span>
         </button>
         <button onClick={() => jump("architecture")}>
-          02 <span>Architecture</span>
+          02 <span>How it works</span>
         </button>
         <button onClick={() => jump("decisions")}>
           03 <span>Design</span>
@@ -112,37 +113,7 @@ export default function CaseStudyViewer({
           className="dossier-architecture"
           data-reveal
         >
-          <div className="section-caption">
-            <p className="eyebrow">02 / INSIDE THE SYSTEM</p>
-            <span>{project.focus}</span>
-          </div>
-          <div className="diagram-tools">
-            <button
-              aria-pressed={diagramLarge}
-              onClick={() => setDiagramLarge((value) => !value)}
-            >
-              {diagramLarge ? "Fit diagram" : "Enlarge diagram"}
-              {diagramLarge ? <Minus size={14} /> : <Plus size={14} />}
-            </button>
-          </div>
-          <div
-            className={`diagram-viewport ${diagramLarge ? "diagram-large" : ""}`}
-            tabIndex={diagramLarge ? 0 : undefined}
-            aria-label={
-              diagramLarge
-                ? "Enlarged architecture diagram, scroll horizontally to explore"
-                : undefined
-            }
-          >
-            <ProjectDiagram
-              activeSection={project.id}
-              reducedMotion={reducedMotion}
-            />
-          </div>
-          <p className="diagram-boundary">
-            Conceptual architecture. The source repository defines the
-            implementation and its limits.
-          </p>
+          <SystemStory project={project.id} reducedMotion={reducedMotion} />
         </section>
         <section
           id={`${project.id}-decisions`}
@@ -150,11 +121,7 @@ export default function CaseStudyViewer({
           data-reveal
         >
           <p className="eyebrow">03 / DESIGN SURFACE</p>
-          <h3>
-            The details carry
-            <br />
-            <em>the guarantee.</em>
-          </h3>
+          <h3>{story.decisionsTitle}</h3>
           <ol>
             {project.highlights.map((highlight, i) => (
               <li key={highlight}>
@@ -198,23 +165,27 @@ export default function CaseStudyViewer({
           </div>
           <div>
             <p className="eyebrow">04 / WHAT THE EVIDENCE SUPPORTS</p>
-            <h3>
-              A claim needs
-              <br />
-              <em>a boundary.</em>
-            </h3>
+            <h3>{story.evidenceTitle}</h3>
+            <div className="evidence-facts">
+              {story.facts.map((fact) => (
+                <div key={fact.value}>
+                  <strong>{fact.value}</strong>
+                  <span>{fact.label}</span>
+                </div>
+              ))}
+            </div>
             <p className="evidence-proof">{project.proof}</p>
             <p className="source-map">
               <span>REPOSITORY SOURCE MAP</span>
               {project.sourcePath}
             </p>
             <a
-              href={project.githubUrl}
+              href={story.source}
               target="_blank"
               rel="noopener noreferrer"
               className="edition-link"
             >
-              Inspect the repository <ArrowUpRight size={18} />
+              {story.sourceLabel} <ArrowUpRight size={18} />
             </a>
           </div>
         </section>
