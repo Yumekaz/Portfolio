@@ -7,7 +7,7 @@ A custom titanium ring with three independent arcs and a vermilion inner rim set
 ## Behavior
 
 - Available on the first arrival to every route, once per tab session.
-- 780 ms assembly after the emblem is ready, then a 540 ms reveal; preparation is capped at 1,800 ms.
+- A 1,800 ms presentation followed by a 540 ms reveal: 2.34 seconds total unless skipped. The arcs assemble over 1,320 ms with 90/180 ms stagger, leaving a brief settled hold. Loading cannot extend the presentation deadline.
 - Enter portfolio and Escape skip immediately. The footer has Replay opening.
 - OS reduced motion and the portfolio motion switch bypass it. Browser back/forward restoration also bypasses it.
 - The page behind the dialog is inert; focus and scrolling are restored on exit. Existing deep links retain their destination.

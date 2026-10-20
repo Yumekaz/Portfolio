@@ -48,13 +48,18 @@ test("restricted storage never blocks entry or throws", () => {
   assert.doesNotThrow(() => rememberOpening(storage));
 });
 
-test("ready content reveals after the brief assembly and completes exactly once", async () => {
+test("ready content stays for the requested 2.34 seconds and completes exactly once", async () => {
   const time = clock(), phases = [];
   const opening = startOpening({ ready: Promise.resolve(), onPhase: p => phases.push(p), ...time });
   await flush();
-  time.advance(ASSEMBLY_MS);
+  time.advance(1799);
+  assert.deepEqual(phases, []);
+  time.advance(1);
   assert.deepEqual(phases, ["revealing"]);
-  time.advance(REVEAL_MS);
+  time.advance(539);
+  assert.deepEqual(phases, ["revealing"]);
+  time.advance(1);
+  assert.deepEqual(phases, ["revealing", "complete"]);
   opening.skip();
   time.advance(10000);
   assert.deepEqual(phases, ["revealing", "complete"]);
@@ -77,16 +82,18 @@ test("asset rejection still reveals the portfolio", async () => {
   assert.deepEqual(phases, ["revealing", "complete"]);
 });
 
-test("late artwork gets its assembly time without exceeding the overall deadline", async () => {
+test("late artwork keeps the same 2.34-second overall duration", async () => {
   const time = clock(), phases = [];
   let finishArt;
   const art = new Promise(resolve => { finishArt = resolve; });
   startOpening({ ready: art, assemblyReady: art, onPhase: p => phases.push(p), ...time });
   time.advance(300);
   finishArt(); await flush();
-  time.advance(ASSEMBLY_MS - 1);
+  time.advance(1499);
   assert.deepEqual(phases, []);
-  time.advance(1 + REVEAL_MS);
+  time.advance(1);
+  assert.deepEqual(phases, ["revealing"]);
+  time.advance(540);
   assert.deepEqual(phases, ["revealing", "complete"]);
 });
 

@@ -74,10 +74,10 @@
 .opening-piece-1 { clip-path: polygon(50% 50%, 100% 77%, 100% 100%, 0 100%, 0 77%); --piece-x: 0%; --piece-y: 20%; --piece-rotation: -12deg; }
 .opening-piece-2 { clip-path: polygon(50% 50%, 0 77%, 0 0, 50% 0); --piece-x: -17%; --piece-y: -10%; --piece-rotation: -18deg; }
 .opening-sequence[data-art-ready="true"] .opening-piece {
-  animation: opening-assemble 660ms var(--opening-ease) both;
+  animation: opening-assemble 1320ms var(--opening-ease) both;
 }
-.opening-sequence[data-art-ready="true"] .opening-piece-1 { animation-delay: 45ms; }
-.opening-sequence[data-art-ready="true"] .opening-piece-2 { animation-delay: 90ms; }
+.opening-sequence[data-art-ready="true"] .opening-piece-1 { animation-delay: 90ms; }
+.opening-sequence[data-art-ready="true"] .opening-piece-2 { animation-delay: 180ms; }
 .opening-core {
   position: absolute;
   inset: 0;
@@ -96,7 +96,7 @@
   border-radius: 50%;
   background: var(--signal);
   box-shadow: 0 0 24px #ff5a3855;
-  animation: opening-signal 760ms ease-out both;
+  animation: opening-signal 1400ms ease-out both;
 }
 .opening-coordinate {
   position: absolute;
@@ -120,14 +120,14 @@
   font-size: clamp(20px, 2.4vw, 32px);
   letter-spacing: -.055em;
   white-space: nowrap;
-  animation: opening-caption 700ms var(--opening-ease) both;
+  animation: opening-caption 1100ms var(--opening-ease) both;
 }
 .opening-caption > span:last-child { color: #a0a399; }
 .opening-bottomline { justify-content: space-between; gap: 20px; border-top: 1px solid #eeece526; padding-top: 16px; }
 .opening-principle { display: flex; gap: 20px; align-items: center; }
 #opening-description { font: 9px "IBM Plex Mono", monospace; color: #b3b5aa; }
 .opening-parts { display: flex; gap: 4px; }
-.opening-parts i { width: 4px; height: 18px; background: var(--signal); animation: opening-part-mark 600ms var(--opening-ease) both; }
+.opening-parts i { width: 4px; height: 18px; background: var(--signal); animation: opening-part-mark 1000ms var(--opening-ease) both; }
 .opening-parts i:nth-child(2) { animation-delay: 90ms; }
 .opening-parts i:nth-child(3) { animation-delay: 180ms; }
 .opening-skip {

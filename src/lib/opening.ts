@@ -1,7 +1,9 @@
 export const OPENING_SESSION_KEY = "portfolio-opening-v1";
 export const OPENING_REPLAY_EVENT = "portfolio:replay-opening";
-export const ASSEMBLY_MS = 780;
-export const MAX_PREPARE_MS = 1800;
+// A deliberate 1.8-second presentation followed by the 540 ms reveal.
+// Keep the deadline equal to the presentation so loading cannot extend it.
+export const ASSEMBLY_MS = 1800;
+export const MAX_PREPARE_MS = ASSEMBLY_MS;
 export const REVEAL_MS = 540;
 
 export type OpeningPhase = "assembling" | "revealing" | "complete";
