@@ -11,7 +11,8 @@
     "preview": "vite preview",
     "build:pages": "VITE_BASE_PATH=/Portfolio/ npm run build",
     "test:build": "node scripts/verify-build.mjs",
-    "test:lab": "node --test scripts/failure-lab.test.mjs"
+    "test:lab": "node --test scripts/failure-lab.test.mjs",
+    "test:opening": "node --test scripts/opening.test.mjs"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",

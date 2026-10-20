@@ -13,6 +13,8 @@ import { siteUrl } from "./lib/paths";
 import { useMotionPreference } from "./hooks/useMotionPreference";
 import ReadingProgress from "./components/ReadingProgress";
 import { useChoreography } from "./hooks/useChoreography";
+import OpeningSequence from "./components/OpeningSequence";
+import { OPENING_REPLAY_EVENT, shouldShowOpening } from "./lib/opening";
 
 type SiteRoute = "home" | "projects" | "notes" | "other-work";
 
@@ -83,9 +85,24 @@ function OtherWorkPage() {
 function App() {
   const [route] = useState(currentRoute);
   const { reduced, systemReduced, toggleMotion } = useMotionPreference();
+  const [opening, setOpening] = useState(() => {
+    try {
+      const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+      return shouldShowOpening(reduced, navigation?.type, window.sessionStorage);
+    } catch {
+      return false;
+    }
+  });
   const [activeSection, setActiveSection] = useState(projectFromHash);
   useChoreography(`${route}:${activeSection}`, reduced);
   const lastScrolledProject = useRef<string | null>(null);
+  const lastScrolledAnchor = useRef<string | null>(null);
+
+  useEffect(() => {
+    const replay = () => { if (!reduced) setOpening(true); };
+    window.addEventListener(OPENING_REPLAY_EVENT, replay);
+    return () => window.removeEventListener(OPENING_REPLAY_EVENT, replay);
+  }, [reduced]);
 
   useEffect(() => {
     const nodes = Array.from(
@@ -128,6 +145,7 @@ function App() {
   useEffect(() => {
     if (
       route !== "projects" ||
+      opening ||
       !hasProjectHash() ||
       lastScrolledProject.current === activeSection
     )
@@ -143,13 +161,16 @@ function App() {
     }, 0);
 
     return () => window.clearTimeout(timer);
-  }, [activeSection, route, reduced]);
+  }, [activeSection, route, reduced, opening]);
 
   useEffect(() => {
-    if (route === "projects") return;
+    if (route === "projects" || opening) return;
     const id = window.location.hash.slice(1);
-    if (id) document.getElementById(id)?.scrollIntoView({ behavior: "auto" });
-  }, [route]);
+    if (id && lastScrolledAnchor.current !== id) {
+      lastScrolledAnchor.current = id;
+      document.getElementById(id)?.scrollIntoView({ behavior: "auto" });
+    }
+  }, [route, opening]);
 
   const selectProject = (id: string) => {
     setActiveSection(id);
@@ -183,6 +204,7 @@ function App() {
   }
 
   return (
+    <>
     <div className="site-shell" data-route={route}>
       <ReadingProgress />
       <a
@@ -201,6 +223,8 @@ function App() {
         {page}
       </main>
     </div>
+    {opening && <OpeningSequence reducedMotion={reduced} onComplete={() => setOpening(false)} />}
+    </>
   );
 }
 

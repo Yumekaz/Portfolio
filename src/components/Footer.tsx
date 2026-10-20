@@ -4,9 +4,11 @@ import {
   Github,
   Linkedin,
   FileDown,
+  RotateCcw,
 } from "lucide-react";
 import TraceField from "./TraceField";
 import { siteUrl } from "../lib/paths";
+import { requestOpeningReplay } from "../lib/opening";
 export default function Footer() {
   return (
     <footer id="contact" className="site-footer">
@@ -68,6 +70,9 @@ export default function Footer() {
       <div className="footer-bottom">
         <span>© {new Date().getFullYear()} Mihir Swarnkar</span>
         <span>No tracking. No analytics. Just engineering.</span>
+        <button type="button" className="replay-opening" onClick={requestOpeningReplay}>
+          <RotateCcw size={12} aria-hidden="true" /> Replay opening
+        </button>
         <a href="#page-content">
           Back to top <ArrowUp size={14} />
         </a>
